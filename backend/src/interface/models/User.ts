@@ -1,9 +1,11 @@
-import { UserType } from "@/database/models/schema";
+import { ObjectId } from "mongoose";
 
 export default interface User {
-	username: string;
+	user_id: ObjectId;
+	firstname: string;
+	lastname: string;
 	password: string;
 	email: string;
 	tel: string;
-	type: UserType;
+	isRestaurant: boolean;
 }
