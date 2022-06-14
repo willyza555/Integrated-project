@@ -20,9 +20,11 @@ import morgan from "morgan";
 import { logger } from "@/utils/serviceLog";
 import path from "path";
 import fs from "fs";
+import userRoute from "./routes/User";
 
 /** Instantiate Application */
 const app = express();
+
 
 const accessLogStream = fs.createWriteStream(
 	path.join(__dirname, "access.log"),
@@ -31,6 +33,7 @@ const accessLogStream = fs.createWriteStream(
 	}
 );
 /** Express configurations */
+dotenv.config();
 app.use(express.json());
 app.use(
 	config.isDev
@@ -42,7 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 /** Plugins */
 app.use(
 	cors({
-		origin: "*",
+		origin: "http://localhost:3000",
 		credentials: true,
 	})
 );
@@ -72,6 +75,7 @@ app.use(
 
 /** Routes */
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
 
 // for testing only
 app.get("/", async (req, res) => {

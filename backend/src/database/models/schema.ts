@@ -11,11 +11,6 @@ const validateEmail = function (email) {
 };
 
 export const userSchema = new Schema<User>({
-	user_id: {
-		type: Types.ObjectId,
-		ref: "User",
-		required: [true, "User id is required"],
-	},
 	email: {
 		type: String,
 		required: [true, "Enter an email address."],
@@ -49,11 +44,6 @@ export const userSchema = new Schema<User>({
 });
 
 export const restaurantSchema = new Schema<Restaurant>({
-	res_id: {
-		type: Types.ObjectId,
-		ref: "User",
-		required: [true, "User id is required"],
-	},
 	owner_id: {
 		type: String,
 		unique: true,
@@ -81,10 +71,6 @@ export const restaurantSchema = new Schema<Restaurant>({
 });
 
 export const productSchema = new Schema<Product>({
-	product_id: {
-		type: Types.ObjectId,
-		required: true,
-	},
 	res_id: {
 		type: String,
 		required: true,
@@ -100,10 +86,6 @@ export const productSchema = new Schema<Product>({
 });
 
 export const orderSchema = new Schema<Order>({
-	order_id: {
-		type: Types.ObjectId,
-		required: true,
-	},
 	customer_id: {
 		type: Types.ObjectId,
 		required: true,

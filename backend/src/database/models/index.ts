@@ -13,16 +13,20 @@ import {
 	orderDetailSchema,
 } from "./schema";
 
-export const User = mongoose.model<User>("User", userSchema, "users");
+export const User = mongoose.model<User>("User", userSchema, "User");
 export const Restaurant = mongoose.model<Restaurant>(
 	"Restaurant",
 	restaurantSchema,
-	"restaurants"
+	"restaurant"
 );
 export const Product = mongoose.model<Product>(
-	"Product",
+	"Products",
 	productSchema,
 	"Product"
 );
 export const Order = mongoose.model<Order>("Order", orderSchema, "Order");
-export const OrderDetail = mongoose.model<OrderDetail>("orderDetail", orderDetailSchema, "orderDetail");
+export const OrderDetail = mongoose.model<OrderDetail>(
+	"OrderDetail",
+	orderDetailSchema,
+	"OrderDetail"
+);
