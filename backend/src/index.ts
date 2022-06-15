@@ -20,8 +20,8 @@ import morgan from "morgan";
 import { logger } from "@/utils/serviceLog";
 import path from "path";
 import fs from "fs";
-import userRoute from "./routes/User";
-import productRoute from "./routes/product";
+import userRoute from "@/routes/user";
+import productRoute from "@/routes/product";
 
 /** Instantiate Application */
 const app = express();
