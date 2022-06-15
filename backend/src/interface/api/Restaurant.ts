@@ -1,12 +1,12 @@
 import { ObjectId } from "mongoose";
 
-export default interface Restaurant {
+export interface RestaurantPost {
 	owner_id: ObjectId;
 	name: string;
 	address: string;
 	location: {
 		type: "Point";
-		coordinates: number[];
+		coordinates: [];
 	};
 	isOpen: boolean;
 }

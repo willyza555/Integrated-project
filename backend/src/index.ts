@@ -21,10 +21,10 @@ import { logger } from "@/utils/serviceLog";
 import path from "path";
 import fs from "fs";
 import userRoute from "./routes/User";
+import productRoute from "./routes/product";
 
 /** Instantiate Application */
 const app = express();
-
 
 const accessLogStream = fs.createWriteStream(
 	path.join(__dirname, "access.log"),
@@ -76,6 +76,7 @@ app.use(
 /** Routes */
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
+app.use("/product", productRoute);
 
 // for testing only
 app.get("/", async (req, res) => {

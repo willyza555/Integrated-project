@@ -45,7 +45,7 @@ export const userSchema = new Schema<User>({
 
 export const restaurantSchema = new Schema<Restaurant>({
 	owner_id: {
-		type: String,
+		type: Types.ObjectId,
 		unique: true,
 	},
 	name: {
@@ -72,7 +72,7 @@ export const restaurantSchema = new Schema<Restaurant>({
 
 export const productSchema = new Schema<Product>({
 	res_id: {
-		type: String,
+		type: Types.ObjectId,
 		required: true,
 	},
 	name: {
