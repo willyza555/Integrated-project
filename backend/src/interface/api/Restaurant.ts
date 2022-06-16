@@ -6,7 +6,6 @@ export interface RestaurantPost {
 	address: string;
 	location: {
 		type: "Point";
-		coordinates: [];
+		coordinates: number[];
 	};
-	isOpen: boolean;
 }
