@@ -5,6 +5,7 @@ import 'package:sheepper/screens/product.dart';
 import 'package:sheepper/services/dio.dart';
 import 'package:sheepper/services/provider/product_list.dart';
 import 'package:sheepper/services/share_preference.dart';
+import 'package:thebrioflashynavbar/thebrioflashynavbar.dart';
 
 void main() {
   runApp(
@@ -75,7 +76,20 @@ class MyApp extends StatelessWidget {
         //     subtitle1: GoogleFonts.poppins(fontSize: 14)),
       ),
       home: Scaffold(
-        body: Container(),
+        body: Container(
+    
+  decoration: BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white,Colors.orange])),
+          child: Column(
+            children: [
+              
+            ],
+          ),
+        ),
+        bottomNavigationBar: nevbar(),
       ),
       routes: {
         Product.routeName: (context) => const Product(),
@@ -166,3 +180,45 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+class nevbar extends StatefulWidget {
+  const nevbar({ Key? key }) : super(key: key);
+
+  @override
+  State<nevbar> createState() => _nevbarState();
+}
+
+class _nevbarState extends State<nevbar> {
+  var _selectedIndex= 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Thebrioflashynavbar(
+     selectedIndex: _selectedIndex,
+     showElevation: true,
+     onItemSelected: (index) => setState(() {
+       _selectedIndex = index;
+     }),
+     items: [
+        ThebrioflashynavbarItem(
+          icon: Icon(Icons.person),
+          title: Text('PROFILE'),
+        ),
+        ThebrioflashynavbarItem(
+          icon: Icon(Icons.restaurant),
+          title: Text('FOOD'),
+        ),
+        ThebrioflashynavbarItem(
+          icon: Icon(Icons.list_alt),
+          title: Text('LIST'),
+        ),
+        ThebrioflashynavbarItem(
+          icon: Icon(Icons.shopping_cart),
+          title: Text('CART'),
+        ),
+      ],
+);
+  }
+}
+
+
