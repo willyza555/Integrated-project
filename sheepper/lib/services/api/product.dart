@@ -5,7 +5,6 @@ import 'package:sheepper/services/dio.dart';
 import 'package:sheepper/services/share_preference.dart';
 
 class ProductApi {
-  
   //Get all products
   static Future<dynamic> getRestaurantInfo() async {
     DioInstance.dio.options.headers["authorization"] =

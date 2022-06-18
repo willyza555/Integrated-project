@@ -28,8 +28,8 @@ class Button extends StatelessWidget {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: <Color>[
-              Color(0xFF245679),
-              Color(0xFF173651),
+              Color.fromARGB(255, 250, 189, 119),
+              Color(0xFFEF9A39),
             ],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,

@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sheepper/screens/product.dart';
+import 'package:sheepper/screens/sign_in.dart';
 import 'package:sheepper/services/dio.dart';
 import 'package:sheepper/services/provider/product_list.dart';
 import 'package:sheepper/services/share_preference.dart';
 import 'package:thebrioflashynavbar/thebrioflashynavbar.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 void main() {
   runApp(
@@ -38,64 +43,59 @@ class MyApp extends StatelessWidget {
         // iconTheme: const IconThemeData(
         //   color: Color.fromARGB(255, 84, 156, 160),
         // ),
-        // textTheme: TextTheme(
-        //     headline3: GoogleFonts.poppins(
-        //       fontSize: 24,
-        //       fontWeight: FontWeight.w600,
-        //       color: const Color(0xFF24577A),
-        //     ),
-        //     headline2: GoogleFonts.poppins(
-        //         fontSize: 20,
-        //         fontWeight: FontWeight.w600,
-        //         color: const Color(0xFF24577A)),
-        //     headline1: GoogleFonts.poppins(
-        //         fontSize: 38,
-        //         fontWeight: FontWeight.w600,
-        //         color: const Color(0xFF022B3A)),
-        //     headline4: GoogleFonts.poppins(
-        //         fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
-        //     headline5: GoogleFonts.poppins(
-        //       fontSize: 20,
-        //       fontWeight: FontWeight.w600,
-        //       color: const Color.fromARGB(255, 5, 5, 5),
-        //     ),
-        //     headline6: GoogleFonts.poppins(
-        //       fontSize: 16,
-        //       fontWeight: FontWeight.w500,
-        //       color: const Color.fromARGB(80, 0, 0, 0),
-        //     ),
-        //     bodyText1: GoogleFonts.poppins(
-        //         fontSize: 16,
-        //         fontWeight: FontWeight.w500,
-        //         color: const Color(0xff0E2B39)),
-        //     bodyText2: GoogleFonts.poppins(
-        //       fontSize: 14,
-        //       color: const Color(0xFF022B3A),
-        //       fontWeight: FontWeight.w600,
-        //     ),
+        textTheme: TextTheme(
+          //     headline3: GoogleFonts.poppins(
+          //       fontSize: 24,
+          //       fontWeight: FontWeight.w600,
+          //       color: const Color(0xFF24577A),
+          //     ),
+          headline2: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF24577A)),
+          headline1: GoogleFonts.poppins(
+              fontSize: 38,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF323B69)),
+          //     headline4: GoogleFonts.poppins(
+          //         fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+          //     headline5: GoogleFonts.poppins(
+          //       fontSize: 20,
+          //       fontWeight: FontWeight.w600,
+          //       color: const Color.fromARGB(255, 5, 5, 5),
+          //     ),
+          //     headline6: GoogleFonts.poppins(
+          //       fontSize: 16,
+          //       fontWeight: FontWeight.w500,
+          //       color: const Color.fromARGB(80, 0, 0, 0),
+          //     ),
+          //     bodyText1: GoogleFonts.poppins(
+          //         fontSize: 16,
+          //         fontWeight: FontWeight.w500,
+          //         color: const Color(0xff0E2B39)),
+          //     bodyText2: GoogleFonts.poppins(
+          //       fontSize: 14,
+          //       color: const Color(0xFF022B3A),
+          //       fontWeight: FontWeight.w600,
+        ),
         //     subtitle1: GoogleFonts.poppins(fontSize: 14)),
       ),
       home: Scaffold(
-        body: Container(
-    
-  decoration: BoxDecoration(
-      gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.white,Colors.orange])),
-          child: Column(
-            children: [
-              
-            ],
-          ),
+        body: AnimatedSplashScreen(
+          duration: 2000,
+          centered: true,
+          splash: 'assets/sheepper_logo.png',
+          nextScreen: const SignIn(),
+          splashTransition: SplashTransition.fadeTransition,
+          pageTransitionType: PageTransitionType.fade,
         ),
-        bottomNavigationBar: nevbar(),
       ),
       routes: {
         Product.routeName: (context) => const Product(),
         MyHomePage.routeName: (context) => const MyHomePage(
               title: '',
             ),
+        SignIn.routeName: (context) => const SignIn(),
       },
     );
   }
@@ -142,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+      bottomNavigationBar: const Nevbar(),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -181,44 +182,42 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class nevbar extends StatefulWidget {
-  const nevbar({ Key? key }) : super(key: key);
+class Nevbar extends StatefulWidget {
+  const Nevbar({Key? key}) : super(key: key);
 
   @override
-  State<nevbar> createState() => _nevbarState();
+  State<Nevbar> createState() => _NevbarState();
 }
 
-class _nevbarState extends State<nevbar> {
-  var _selectedIndex= 0;
+class _NevbarState extends State<Nevbar> {
+  var _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Thebrioflashynavbar(
-     selectedIndex: _selectedIndex,
-     showElevation: true,
-     onItemSelected: (index) => setState(() {
-       _selectedIndex = index;
-     }),
-     items: [
+      selectedIndex: _selectedIndex,
+      showElevation: true,
+      onItemSelected: (index) => setState(() {
+        _selectedIndex = index;
+      }),
+      items: [
         ThebrioflashynavbarItem(
-          icon: Icon(Icons.person),
-          title: Text('PROFILE'),
+          icon: const Icon(Icons.person),
+          title: const Text('PROFILE'),
         ),
         ThebrioflashynavbarItem(
-          icon: Icon(Icons.restaurant),
-          title: Text('FOOD'),
+          icon: const Icon(Icons.restaurant),
+          title: const Text('FOOD'),
         ),
         ThebrioflashynavbarItem(
-          icon: Icon(Icons.list_alt),
-          title: Text('LIST'),
+          icon: const Icon(Icons.list_alt),
+          title: const Text('LIST'),
         ),
         ThebrioflashynavbarItem(
-          icon: Icon(Icons.shopping_cart),
-          title: Text('CART'),
+          icon: const Icon(Icons.shopping_cart),
+          title: const Text('CART'),
         ),
       ],
-);
+    );
   }
 }
-
-
