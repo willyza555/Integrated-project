@@ -23,7 +23,7 @@ export const AddProduct = async (req: Request, body: ProductPost) => {
 		} catch (e) {
 			return genericError(e.message, 400);
 		}
-		return infoResponse(null, "offer added!", 201);
+		return infoResponse(null, "Product added!", 201);
 	} catch (e) {
 		return genericError(e.message, 500);
 	}
