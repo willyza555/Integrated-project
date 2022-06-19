@@ -64,7 +64,7 @@ export const UpdateProduct = async (
 			return genericError(error.message, 400);
 		}
 
-		return infoResponse(null, "product updated!", 200);
+		return infoResponse(null, "Product updated!", 200);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
