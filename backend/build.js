@@ -40,7 +40,7 @@ esbuild
 		console.log(`            ${chalk.yellow.bold(`yarn`)} serve\n`);
 		console.log(
 			`Made with ❤️  by ${chalk.underline.bold(
-				"Sirawit Pratoomsuwan"
+				"Sheepper Team"
 			)} 😊`
 		);
 	})
