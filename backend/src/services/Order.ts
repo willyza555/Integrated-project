@@ -1,4 +1,4 @@
-import { Order, OrderDetail, Restaurant } from "@/database/models";
+import { Order, OrderDetail, Product, Restaurant } from "@/database/models";
 import { CreateOrderPost, OrderUpdate } from "@/interface/api/Order";
 import { Request } from "express";
 import { ObjectId } from "mongoose";
@@ -13,13 +13,31 @@ export const CreateOrder = async (req: Request, body: CreateOrderPost) => {
 				400
 			);
 		}
+		const user_id = req.user.user_id;
+		const product1 = await Product.findOne({
+			_id: body.detail[0].product_id,
+		}).exec();
+		const product2 = await Product.findOne({
+			_id: body.detail[1].product_id,
+		}).exec();
+
+		const total =
+			product1.price * body.detail[0].quantity +
+			product2.price * body.detail[1].quantity;
 		try {
 			const new_order = await Order.create({
+				customer_id: user_id,
+				res_id: product1.res_id,
+				total: total,
 				...body,
 			});
 			await OrderDetail.create({
 				order_id: new_order._id,
-				...body.detail,
+				...body.detail[0],
+			});
+			await OrderDetail.create({
+				order_id: new_order._id,
+				...body.detail[1],
 			});
 		} catch (error) {
 			return genericError(error.message, 400);
@@ -44,6 +62,26 @@ export const GetOrders = async (req: Request) => {
 			.exec();
 		const orders = await Order.find({ res_id }).exec();
 		return infoResponse(orders, "Get order success", 200);
+	} catch (error) {
+		return genericError(error.message, 500);
+	}
+};
+
+export const GetOrder = async (req: Request) => {
+	try {
+		if (!isLogin(req)) {
+			return genericError(
+				"Unauthorize: Login is required to do function",
+				400
+			);
+		}
+		const order_id = req.params.order_id;
+		const user_id = req.user.user_id;
+		const res_id = await Restaurant.findOne({ owner_id: user_id })
+			.select("_id")
+			.exec();
+		const order = await Order.findOne({ _id: order_id, res_id }).exec();
+		return infoResponse(order, "Get order success", 200);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
