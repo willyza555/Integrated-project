@@ -20,8 +20,10 @@ import morgan from "morgan";
 import { logger } from "@/utils/serviceLog";
 import path from "path";
 import fs from "fs";
-import userRoute from "./routes/User";
-import productRoute from "./routes/product";
+import userRoute from "@/routes/User";
+import productRoute from "@/routes/product";
+import restaurantRoute from "@/routes/restaurant";
+import orderRoute from "./routes/order";
 
 /** Instantiate Application */
 const app = express();
@@ -77,6 +79,8 @@ app.use(
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/product", productRoute);
+app.use("/restaurant", restaurantRoute);
+app.use("/order", orderRoute);
 
 // for testing only
 app.get("/", async (req, res) => {
