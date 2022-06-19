@@ -3,6 +3,7 @@ import { responseHandler } from "@/services/Handler";
 import {
 	CreateOrder,
 	DeleteOrder,
+	GetOrder,
 	GetOrders,
 	OrderDone,
 	UpdateOrder,
@@ -12,7 +13,7 @@ import { ObjectId } from "mongoose";
 
 const orderRoute = express.Router();
 
-orderRoute.post("/createorder", async (req, res) => {
+orderRoute.post("/", async (req, res) => {
 	const data: CreateOrderPost = req.body;
 	return responseHandler(res, await CreateOrder(req, data));
 });
@@ -24,6 +25,10 @@ orderRoute.delete("/delete", async (req, res) => {
 
 orderRoute.get("/", async (req, res) => {
 	return responseHandler(res, await GetOrders(req));
+});
+
+orderRoute.get("/:order_id", async (req, res) => {
+	return responseHandler(res, await GetOrder(req));
 });
 
 orderRoute.patch("/update", async (req, res) => {

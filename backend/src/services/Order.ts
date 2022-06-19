@@ -13,8 +13,14 @@ export const CreateOrder = async (req: Request, body: CreateOrderPost) => {
 				400
 			);
 		}
+		const res_id = await Restaurant.findOne({
+			owner_id: req.user.user_id,
+		})
+			.select("_id")
+			.exec();
 		try {
 			const new_order = await Order.create({
+				res_id: res_id,
 				...body,
 			});
 			await OrderDetail.create({
@@ -44,6 +50,26 @@ export const GetOrders = async (req: Request) => {
 			.exec();
 		const orders = await Order.find({ res_id }).exec();
 		return infoResponse(orders, "Get order success", 200);
+	} catch (error) {
+		return genericError(error.message, 500);
+	}
+};
+
+export const GetOrder = async (req: Request) => {
+	try {
+		if (!isLogin(req)) {
+			return genericError(
+				"Unauthorize: Login is required to do function",
+				400
+			);
+		}
+		const order_id = req.params.order_id;
+		const user_id = req.user.user_id;
+		const res_id = await Restaurant.findOne({ owner_id: user_id })
+			.select("_id")
+			.exec();
+		const order = await Order.findOne({ _id: order_id, res_id }).exec();
+		return infoResponse(order, "Get order success", 200);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}

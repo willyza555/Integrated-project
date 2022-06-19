@@ -1,7 +1,6 @@
 import { ObjectId } from "mongoose";
 
 export interface CreateOrderPost {
-	res_id: ObjectId;
 	customer_id: ObjectId;
 	total: number;
 	rider_id: ObjectId;
