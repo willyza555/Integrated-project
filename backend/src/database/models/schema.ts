@@ -83,6 +83,11 @@ export const productSchema = new Schema<Product>({
 		type: Number,
 		required: true,
 	},
+	isSoldOut: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
 });
 
 export const orderSchema = new Schema<Order>({

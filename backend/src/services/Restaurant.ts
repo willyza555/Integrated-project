@@ -37,9 +37,9 @@ export const readRestautant = async (req: Request) => {
 			);
 		}
 		const user_id = req.user.user_id;
-		const databaseres = Restaurant.findOne({
+		const databaseres = await Restaurant.findOne({
 			owner_id: user_id,
-		});
+		}).exec();
 		if (databaseres) {
 			return infoResponse(databaseres, "Restaurant found!", 200);
 		}
@@ -57,11 +57,11 @@ export const deleteRestaurant = async (req: Request) => {
 			);
 		}
 		const user_id = req.user.user_id;
-		const databaseres = Restaurant.deleteOne({
+		const databaseres = await Restaurant.deleteOne({
 			owner_id: user_id,
-		});
+		}).exec();
 		if (databaseres) {
-			return infoResponse(databaseres, "Restaurant found!", 200);
+			return infoResponse(null, "Restaurant deleted!", 200);
 		}
 	} catch (e) {
 		return genericError(e.message, 500);
@@ -78,7 +78,7 @@ export const updateRestaurant = async (req: Request) => {
 		}
 		const user_id = req.user.user_id;
 
-		const databaseres = Restaurant.findById({
+		const databaseres = await Restaurant.findById({
 			owner_id: user_id,
 		});
 
@@ -91,11 +91,12 @@ export const updateRestaurant = async (req: Request) => {
 
 		try {
 			await Restaurant.updateOne({
-				$set: { isOpen: !(await databaseres).isOpen },
-			});
+				$set: { isOpen: !databaseres.isOpen },
+			}).exec();
 		} catch (e) {
 			return genericError(e.message, 400);
 		}
+		return infoResponse(null, "Restaurant updated!", 200);
 	} catch (e) {
 		return genericError(e.message, 500);
 	}

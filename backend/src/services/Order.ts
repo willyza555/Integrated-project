@@ -1,4 +1,4 @@
-import { Order, OrderDetail, Restaurant } from "@/database/models";
+import { Order, OrderDetail, Product, Restaurant } from "@/database/models";
 import { CreateOrderPost, OrderUpdate } from "@/interface/api/Order";
 import { Request } from "express";
 import { ObjectId } from "mongoose";
@@ -13,19 +13,31 @@ export const CreateOrder = async (req: Request, body: CreateOrderPost) => {
 				400
 			);
 		}
-		const res_id = await Restaurant.findOne({
-			owner_id: req.user.user_id,
-		})
-			.select("_id")
-			.exec();
+		const user_id = req.user.user_id;
+		const product1 = await Product.findOne({
+			_id: body.detail[0].product_id,
+		}).exec();
+		const product2 = await Product.findOne({
+			_id: body.detail[1].product_id,
+		}).exec();
+
+		const total =
+			product1.price * body.detail[0].quantity +
+			product2.price * body.detail[1].quantity;
 		try {
 			const new_order = await Order.create({
-				res_id: res_id,
+				customer_id: user_id,
+				res_id: product1.res_id,
+				total: total,
 				...body,
 			});
 			await OrderDetail.create({
 				order_id: new_order._id,
-				...body.detail,
+				...body.detail[0],
+			});
+			await OrderDetail.create({
+				order_id: new_order._id,
+				...body.detail[1],
 			});
 		} catch (error) {
 			return genericError(error.message, 400);
