@@ -83,9 +83,18 @@ export const productSchema = new Schema<Product>({
 		type: Number,
 		required: true,
 	},
+	isSoldOut: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
 });
 
 export const orderSchema = new Schema<Order>({
+	res_id: {
+		type: Types.ObjectId,
+		required: true,
+	},
 	customer_id: {
 		type: Types.ObjectId,
 		required: true,
@@ -97,6 +106,11 @@ export const orderSchema = new Schema<Order>({
 	rider_id: {
 		type: Types.ObjectId,
 		required: true,
+	},
+	isDone: {
+		type: Boolean,
+		required: true,
+		default: false,
 	},
 });
 

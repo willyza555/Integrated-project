@@ -14,16 +14,25 @@ export const AddProduct = async (req: Request, body: ProductPost) => {
 			);
 		}
 		const user_id = req.user.user_id;
+		const restaurant = await Restaurant.findOne({
+			owner_id: user_id,
+		}).exec();
+		if (restaurant == null) {
+			return genericError(
+				"Unauthorize: User is not own this restaurant",
+				400
+			);
+		}
 		try {
 			const new_product = await Product.create({
-				res_id: body.res_id,
+				res_id: restaurant._id,
 				name: body.name,
 				price: body.price,
 			});
 		} catch (e) {
 			return genericError(e.message, 400);
 		}
-		return infoResponse(null, "offer added!", 201);
+		return infoResponse(null, "Product added!", 201);
 	} catch (e) {
 		return genericError(e.message, 500);
 	}
@@ -64,7 +73,7 @@ export const UpdateProduct = async (
 			return genericError(error.message, 400);
 		}
 
-		return infoResponse(null, "product updated!", 200);
+		return infoResponse(null, "Product updated!", 200);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
@@ -164,6 +173,44 @@ export const GetProductById = async (
 		const product = await Product.findOne({ _id: product_id }).exec();
 
 		return infoResponse(product, "product fetched!", 200);
+	} catch (error) {
+		return genericError(error.message, 500);
+	}
+};
+
+export const ProductSoldOut = async (
+	req: Request,
+	product_id: Types.ObjectId
+) => {
+	try {
+		if (!isLogin(req)) {
+			return genericError(
+				"Unauthorize: Login is required to do function",
+				400
+			);
+		}
+
+		const user_id = req.user.user_id;
+
+		const restaurant = await Restaurant.findOne({
+			owner_id: user_id,
+		}).exec();
+
+		if (restaurant == null) {
+			return genericError(
+				"Unauthorize: User is not own this restaurant",
+				400
+			);
+		}
+		try {
+			await Product.updateOne(
+				{ _id: product_id },
+				{ $set: { isSoldOut: true } }
+			).exec();
+		} catch (error) {
+			return genericError(error.message, 400);
+		}
+		return infoResponse(null, "Product sold out!", 200);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
