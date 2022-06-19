@@ -11,6 +11,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+import 'package:sheepper/screens/productlist.dart';
 
 void main() {
   runApp(
@@ -85,7 +86,7 @@ class MyApp extends StatelessWidget {
           duration: 2000,
           centered: true,
           splash: 'assets/sheepper_logo.png',
-          nextScreen: const SignIn(),
+          nextScreen: const productlist(),
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.fade,
         ),
@@ -96,6 +97,7 @@ class MyApp extends StatelessWidget {
               title: '',
             ),
         SignIn.routeName: (context) => const SignIn(),
+        productlist.routeName: (context) => const productlist(),
       },
     );
   }
