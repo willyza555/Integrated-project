@@ -86,6 +86,10 @@ export const productSchema = new Schema<Product>({
 });
 
 export const orderSchema = new Schema<Order>({
+	res_id: {
+		type: Types.ObjectId,
+		required: false,
+	},
 	customer_id: {
 		type: Types.ObjectId,
 		required: true,
