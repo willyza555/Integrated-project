@@ -81,13 +81,15 @@ export const GetOrder = async (req: Request) => {
 			.select("_id")
 			.exec();
 		const order = await Order.findOne({ _id: order_id, res_id }).exec();
-		return infoResponse(order, "Get order success", 200);
+		const order_detail = await OrderDetail.find({ order_id }).exec();
+		const result = { order, order_detail };
+		return infoResponse(result, "Get order success", 200);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
 };
 
-export const DeleteOrder = async (req: Request, order_id: ObjectId) => {
+export const DeleteOrder = async (req: Request) => {
 	try {
 		if (!isLogin(req)) {
 			return genericError(
@@ -95,6 +97,7 @@ export const DeleteOrder = async (req: Request, order_id: ObjectId) => {
 				400
 			);
 		}
+		const order_id = req.params.order_id;
 		await Order.deleteOne({ _id: order_id }).exec();
 		return infoResponse(null, "Delete order success", 200);
 	} catch (error) {
@@ -112,16 +115,29 @@ export const UpdateOrder = async (req: Request, data: OrderUpdate) => {
 		}
 		try {
 			await OrderDetail.updateOne(
-				{ order_id: data.order_id, product_id: data.detail.product_id },
-				{ $set: { quantity: data.detail.quantity } }
+				{
+					order_id: data.order_id,
+					product_id: data.detail[0].product_id,
+				},
+				{ $set: { quantity: data.detail[0].quantity } }
 			).exec();
+			const product1 = await Product.findOne({
+				_id: data.detail[0].product_id,
+			}).exec();
+			const product2 = await Product.findOne({
+				_id: data.detail[1].product_id,
+			}).exec();
+
+			const total =
+				product1.price * data.detail[0].quantity +
+				product2.price * data.detail[1].quantity;
 
 			await Order.updateOne(
 				{
 					_id: data.order_id,
 				},
 				{
-					$set: { total: data.total },
+					$set: { total: total },
 				}
 			);
 		} catch (error) {
@@ -133,7 +149,7 @@ export const UpdateOrder = async (req: Request, data: OrderUpdate) => {
 	}
 };
 
-export const OrderDone = async (req: Request, order_id: ObjectId) => {
+export const OrderDone = async (req: Request) => {
 	try {
 		if (!isLogin(req)) {
 			return genericError(
@@ -141,6 +157,7 @@ export const OrderDone = async (req: Request, order_id: ObjectId) => {
 				400
 			);
 		}
+		const order_id = req.params.order_id;
 		try {
 			await Order.updateOne(
 				{ _id: order_id },

@@ -1,19 +1,19 @@
 class ProductForm {
   final String id;
-  final String resid;
+  final String res_id;
   final String name;
   final int price;
 
   ProductForm(
       {required this.id,
-      required this.resid,
+      required this.res_id,
       required this.name,
       required this.price});
 
   factory ProductForm.fromJson(Map<String, dynamic> json) {
     return ProductForm(
       id: json['_id'],
-      resid: json['resid'],
+      res_id: json['res_id'],
       name: json['name'],
       price: json['price'],
     );
@@ -21,7 +21,7 @@ class ProductForm {
 
   Map<String, dynamic> toJson() {
     return {
-      'resid': resid,
+      'resid': res_id,
       'name': name,
       'price': price,
     };

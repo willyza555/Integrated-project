@@ -3,8 +3,8 @@ import { responseHandler } from "@/services/Handler";
 import {
 	AddProduct,
 	DeleteProduct,
-	GetProduct,
 	GetProductById,
+	GetProducts,
 	ProductSoldOut,
 	UpdateProduct,
 } from "@/services/Product";
@@ -26,7 +26,7 @@ productRoute.patch("/:id", async (req, res) => {
 });
 
 productRoute.get("/", async (req, res) => {
-	return responseHandler(res, await GetProduct(req));
+	return responseHandler(res, await GetProducts(req));
 });
 
 productRoute.get("/:id", async (req, res) => {

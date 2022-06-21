@@ -4,8 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:sheepper/main.dart';
 import 'package:sheepper/models/response/info_response.dart';
+import 'package:sheepper/screens/order.dart';
 import 'package:sheepper/services/api/user.dart';
 import 'package:sheepper/services/dio.dart';
 import 'package:sheepper/services/share_preference.dart';
@@ -44,7 +44,7 @@ class _SignInState extends State<SignIn> {
             setState(() {
               isLoading = false;
             });
-            Navigator.pushNamed(context, MyHomePage.routeName);
+            Navigator.pushNamed(context, Order.routeName);
           }));
         }
       } on DioError catch (e) {
@@ -166,7 +166,7 @@ class _SignInState extends State<SignIn> {
                       style: Theme.of(context).textTheme.caption,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.pushNamed(context, MyHomePage.routeName);
+                          Navigator.pushNamed(context, Order.routeName);
                         },
                     ),
                   ),
@@ -200,7 +200,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.pushNamed(context, MyHomePage.routeName);
+                            Navigator.pushNamed(context, Order.routeName);
                           },
                       ),
                     ),

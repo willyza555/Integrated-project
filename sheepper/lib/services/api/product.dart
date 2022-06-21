@@ -6,10 +6,10 @@ import 'package:sheepper/services/share_preference.dart';
 
 class ProductApi {
   //Get all products
-  static Future<dynamic> getRestaurantInfo() async {
+  static Future<dynamic> getProductInfo(String id) async {
     DioInstance.dio.options.headers["authorization"] =
         "Bearer " + SharePreference.prefs.getString("token").toString();
-    final response = await DioInstance.dio.get("/product");
+    final response = await DioInstance.dio.get("/product/$id");
     if (response.statusCode != 200) {
       return ErrorResponse.fromJson(response.data);
     } else {

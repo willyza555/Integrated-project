@@ -115,7 +115,7 @@ export const DeleteProduct = async (
 	}
 };
 
-export const GetProduct = async (req: Request) => {
+export const GetProducts = async (req: Request) => {
 	try {
 		if (!isLogin(req)) {
 			return genericError(

@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 
 export interface CreateOrderPost {
 	rider_id: ObjectId;
@@ -7,7 +7,7 @@ export interface CreateOrderPost {
 }
 
 interface OrderDetail {
-	product_id: ObjectId;
+	product_id: Types.ObjectId;
 	quantity: number;
 }
 
@@ -21,9 +21,5 @@ export interface OrderGet {
 
 export interface OrderUpdate {
 	order_id: ObjectId;
-	total: number;
-	detail: {
-		product_id: ObjectId;
-		quantity: number;
-	};
+	detail: OrderDetail[];
 }

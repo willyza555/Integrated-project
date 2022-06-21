@@ -9,7 +9,6 @@ import {
 	UpdateOrder,
 } from "@/services/Order";
 import express from "express";
-import { ObjectId } from "mongoose";
 
 const orderRoute = express.Router();
 
@@ -18,9 +17,8 @@ orderRoute.post("/", async (req, res) => {
 	return responseHandler(res, await CreateOrder(req, data));
 });
 
-orderRoute.delete("/delete", async (req, res) => {
-	const order_id: ObjectId = req.body.order_id;
-	return responseHandler(res, await DeleteOrder(req, order_id));
+orderRoute.delete("/delete/:order_id", async (req, res) => {
+	return responseHandler(res, await DeleteOrder(req));
 });
 
 orderRoute.get("/", async (req, res) => {
@@ -36,9 +34,8 @@ orderRoute.patch("/update", async (req, res) => {
 	return responseHandler(res, await UpdateOrder(req, data));
 });
 
-orderRoute.patch("/done", async (req, res) => {
-	const order_id: ObjectId = req.body.order_id;
-	return responseHandler(res, await OrderDone(req, order_id));
+orderRoute.patch("/done/:order_id", async (req, res) => {
+	return responseHandler(res, await OrderDone(req));
 });
 
 export default orderRoute;

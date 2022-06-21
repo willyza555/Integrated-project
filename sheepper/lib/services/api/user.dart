@@ -8,7 +8,6 @@ class UserApi {
       "email": email,
       "password": password,
     });
-    print(response);
     if (response.statusCode != 200) {
       return ErrorResponse.fromJson(response.data);
     }
