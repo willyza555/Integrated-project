@@ -16,13 +16,13 @@ import 'package:sheepper/widgets/common/alert.dart';
 class OrderDetailCard extends StatelessWidget {
   final OrderDetailModel orderDetail;
   final ProductForm productDetail;
-  final Function onDecrease;
+  //final Function onDecrease;
 
   const OrderDetailCard({
     Key? key,
     required this.orderDetail,
     required this.productDetail,
-    required this.onDecrease,
+    //required this.onDecrease,
   }) : super(key: key);
 
   @override
@@ -69,12 +69,12 @@ class OrderDetailCard extends StatelessWidget {
             "${orderDetail.quantity}",
             style: Theme.of(context).textTheme.headline2,
           ),
-          IconButton(
-            icon: Icon(Icons.remove),
-            onPressed: () {
-              onDecrease(orderDetail);
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.remove),
+          //   onPressed: () {
+          //     onDecrease(orderDetail);
+          //   },
+          // ),
         ],
       ),
     );

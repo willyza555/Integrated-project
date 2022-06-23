@@ -5,6 +5,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:sheepper/models/response/info_response.dart';
+import 'package:sheepper/screens/history_order.dart';
 import 'package:sheepper/screens/order.dart';
 import 'package:sheepper/services/api/user.dart';
 import 'package:sheepper/services/dio.dart';
@@ -44,7 +45,7 @@ class _SignInState extends State<SignIn> {
             setState(() {
               isLoading = false;
             });
-            Navigator.pushNamed(context, Order.routeName);
+            Navigator.pushNamed(context, HistoryOrder.routeName);
           }));
         }
       } on DioError catch (e) {
@@ -166,7 +167,7 @@ class _SignInState extends State<SignIn> {
                       style: Theme.of(context).textTheme.caption,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.pushNamed(context, Order.routeName);
+                          Navigator.pushNamed(context, HistoryOrder.routeName);
                         },
                     ),
                   ),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sheepper/screens/history_order.dart';
 import 'package:sheepper/screens/order.dart';
 import 'package:sheepper/screens/product.dart';
 import 'package:sheepper/screens/sign_in.dart';
 import 'package:sheepper/services/dio.dart';
+import 'package:sheepper/services/provider/history_order_detail_list.dart';
+import 'package:sheepper/services/provider/history_order_list.dart';
 import 'package:sheepper/services/provider/order_detail_list.dart';
 import 'package:sheepper/services/provider/product_of_order_list.dart';
 import 'package:sheepper/services/share_preference.dart';
@@ -22,7 +25,9 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => UpdateProductOfOrder()),
         ChangeNotifierProvider(create: (_) => OrderDetailListProvider()),
-        ChangeNotifierProvider(create: (_) => OrderListProvider())
+        ChangeNotifierProvider(create: (_) => OrderListProvider()),
+        ChangeNotifierProvider(create: (_) => HistoryOrderDetailListProvider()),
+        ChangeNotifierProvider(create: (_) => HistoryOrderListProvider()),
       ],
       child: const MyApp(),
     ),
@@ -105,6 +110,7 @@ class MyApp extends StatelessWidget {
         MyHomePage.routeName: (context) => const MyHomePage(),
         SignIn.routeName: (context) => const SignIn(),
         Order.routeName: (context) => const Order(),
+        HistoryOrder.routeName: (context) => const HistoryOrder(),
       },
     );
   }

@@ -60,8 +60,36 @@ export const GetOrders = async (req: Request) => {
 		const res_id = await Restaurant.findOne({ owner_id: user_id })
 			.select("_id")
 			.exec();
-		const orders = await Order.find({ res_id }).exec();
+		const orders = await Order.find({ res_id, isDone: false }).exec();
 		return infoResponse(orders, "Get order success", 200);
+	} catch (error) {
+		return genericError(error.message, 500);
+	}
+};
+
+export const GetOldOrder = async (req: Request) => {
+	try {
+		if (!isLogin(req)) {
+			return genericError(
+				"Unauthorize: Login is required to do function",
+				400
+			);
+		}
+		const order_id = req.params.order_id;
+		const user_id = req.user.user_id;
+		const res_id = await Restaurant.findOne({ owner_id: user_id })
+			.select("_id")
+			.exec();
+		const order = await Order.findOne({
+			_id: order_id,
+			res_id,
+			isDone: true,
+		}).exec();
+		const order_detail = await OrderDetail.find({
+			order_id,
+		}).exec();
+		const result = { order, order_detail };
+		return infoResponse(result, "Get order success", 200);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
@@ -80,7 +108,11 @@ export const GetOrder = async (req: Request) => {
 		const res_id = await Restaurant.findOne({ owner_id: user_id })
 			.select("_id")
 			.exec();
-		const order = await Order.findOne({ _id: order_id, res_id }).exec();
+		const order = await Order.findOne({
+			_id: order_id,
+			res_id,
+			isDone: false,
+		}).exec();
 		const order_detail = await OrderDetail.find({ order_id }).exec();
 		const result = { order, order_detail };
 		return infoResponse(result, "Get order success", 200);

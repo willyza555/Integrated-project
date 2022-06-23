@@ -27,6 +27,17 @@ class OrderApi {
     }
   }
 
+  static Future<dynamic> getOldOrder(String orderId) async {
+    DioInstance.dio.options.headers["authorization"] =
+        "Bearer " + SharePreference.prefs.getString("token").toString();
+    final response = await DioInstance.dio.get("/order/history/$orderId");
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      return ErrorResponse.fromJson(response.data);
+    } else {
+      return InfoResponse.fromJson(response.data);
+    }
+  }
+
   static Future<dynamic> updateOrder(List<OrderDetailModel> order) async {
     DioInstance.dio.options.headers["authorization"] =
         "Bearer " + SharePreference.prefs.getString("token").toString();

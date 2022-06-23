@@ -29,7 +29,6 @@ class Order extends StatefulWidget {
 
 class _OrderState extends State<Order> {
   bool isLoading = true;
-  var value = TextEditingController(text: "2");
   late OrderModel order;
 
   Future<void> _getOrder() async {
@@ -42,7 +41,6 @@ class _OrderState extends State<Order> {
           order = OrderModel.fromJson(result.data["order"]);
           var temp = result.data["order_detail"]
               .map<OrderDetailModel>((e) => OrderDetailModel.fromJson(e));
-          //print(temp);
 
           if (temp != null) {
             Provider.of<OrderDetailListProvider>(context, listen: false)
@@ -50,11 +48,6 @@ class _OrderState extends State<Order> {
           }
           Provider.of<OrderDetailListProvider>(context, listen: false)
               .changeLoadState(false);
-
-          // foreach((e) {
-          //   Provider.of<OrderDetailListProvider>(context, listen: true)
-          //       .updateList(OrderDetailModel.fromJson(e));
-          // });
         });
       }
     } on DioError catch (e) {
@@ -74,37 +67,36 @@ class _OrderState extends State<Order> {
           Provider.of<UpdateProductOfOrder>(context, listen: false)
               .updateAmountOfProduct(ProductForm.fromJson(result.data));
         }
-        print(Provider.of<OrderDetailListProvider>(context, listen: false)
-            .orderDetailList);
       });
     } on DioError catch (e) {
       Alert.errorAlert(e, context);
     }
   }
 
-  Future<void> _decreaseAmount(OrderDetailModel data) async {
-    try {
-      Provider.of<OrderDetailListProvider>(context, listen: false)
-          .orderDetailList
-          .forEach((e) {
-        if (e.product_id == data.product_id && e.order_id == data.order_id) {
-          e.quantity = e.quantity - 1;
-        }
-      });
-      var result = await OrderApi.updateOrder(
-          Provider.of<OrderDetailListProvider>(context, listen: false)
-              .orderDetailList);
-      if (result is InfoResponse) {
-        _getOrder();
-      }
-    } on DioError catch (e) {
-      Alert.errorAlert(e, context);
-    }
-  }
+  // Future<void> _decreaseAmount(OrderDetailModel data) async {
+  //   try {
+  //     Provider.of<OrderDetailListProvider>(context, listen: false)
+  //         .orderDetailList
+  //         .forEach((e) {
+  //       if (e.product_id == data.product_id && e.order_id == data.order_id) {
+  //         e.quantity = e.quantity - 1;
+  //       }
+  //     });
+  //     var result = await OrderApi.updateOrder(
+  //         Provider.of<OrderDetailListProvider>(context, listen: false)
+  //             .orderDetailList);
+  //     if (result is InfoResponse) {
+  //       _getOrder();
+  //     }
+  //   } on DioError catch (e) {
+  //     Alert.errorAlert(e, context);
+  //   }
+  // }
 
   Future<void> _doneOrder() async {
     try {
       var result = await OrderApi.doneOrder(order.order_id);
+
       if (result is InfoResponse) {
         _getOrder();
       }
@@ -163,14 +155,6 @@ class _OrderState extends State<Order> {
                           ),
                         ],
                       ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Color(0xFF63448A),
-                        ),
-                        onPressed: () {},
-                      ),
                     ],
                   ),
                   const SizedBox(
@@ -214,7 +198,7 @@ class _OrderState extends State<Order> {
                                                       .length -
                                                   1) -
                                               index],
-                                  onDecrease: _decreaseAmount,
+                                  //onDecrease: _decreaseAmount,
                                 ),
                         );
                       },

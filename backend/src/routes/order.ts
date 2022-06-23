@@ -3,6 +3,7 @@ import { responseHandler } from "@/services/Handler";
 import {
 	CreateOrder,
 	DeleteOrder,
+	GetOldOrder,
 	GetOrder,
 	GetOrders,
 	OrderDone,
@@ -27,6 +28,10 @@ orderRoute.get("/", async (req, res) => {
 
 orderRoute.get("/:order_id", async (req, res) => {
 	return responseHandler(res, await GetOrder(req));
+});
+
+orderRoute.get("/history/:order_id", async (req, res) => {
+	return responseHandler(res, await GetOldOrder(req));
 });
 
 orderRoute.patch("/update", async (req, res) => {
