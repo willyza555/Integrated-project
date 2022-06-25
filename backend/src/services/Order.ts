@@ -1,4 +1,4 @@
-import { Order, OrderDetail, Product, Restaurant } from "@/database/models";
+import { Order, OrderDetail, Product, Restaurant, User } from "@/database/models";
 import { CreateOrderPost, OrderUpdate } from "@/interface/api/Order";
 import { Request } from "express";
 import { ObjectId } from "mongoose";
@@ -60,12 +60,44 @@ export const GetOrders = async (req: Request) => {
 		const res_id = await Restaurant.findOne({ owner_id: user_id })
 			.select("_id")
 			.exec();
-		const orders = await Order.find({ res_id }).exec();
-		return infoResponse(orders, "Get order success", 200);
+		
+		const orders = await Order.find({ res_id, isDone: false }).exec();
+		
+		
+		const customer = await User.find({ _id: { $in: orders.map((o) => o.customer_id) }, isRestaurant : false }).select(["firstname","lastname","tel"]).exec();
+		
+		return await infoResponse({orders,customer}, "Get order success", 200);
+		
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
 };
+
+export const GetHistoryOrders = async (req: Request) => {
+	try {
+		if (!isLogin(req)) {
+			return genericError(
+				"Unauthorize: Login is required to do function",
+				400
+			);
+		}
+		const user_id = req.user.user_id;
+		const res_id = await Restaurant.findOne({ owner_id: user_id })
+			.select("_id")
+			.exec();
+		
+		const orders = await Order.find({ res_id, isDone: true }).exec();
+		
+		
+		const customer = await User.find({ _id: { $in: orders.map((o) => o.customer_id) }, isRestaurant : false }).select(["firstname","lastname","tel"]).exec();
+		
+		return await infoResponse({orders,customer}, "Get order success", 200);
+		
+	} catch (error) {
+		return genericError(error.message, 500);
+	}
+};
+
 
 export const GetOrder = async (req: Request) => {
 	try {
@@ -81,6 +113,7 @@ export const GetOrder = async (req: Request) => {
 			.select("_id")
 			.exec();
 		const order = await Order.findOne({ _id: order_id, res_id }).exec();
+		
 		return infoResponse(order, "Get order success", 200);
 	} catch (error) {
 		return genericError(error.message, 500);

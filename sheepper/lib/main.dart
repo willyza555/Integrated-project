@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sheepper/screens/history_orders.dart';
+import 'package:sheepper/screens/orderlist.dart';
 import 'package:sheepper/screens/product.dart';
+import 'package:sheepper/screens/profile.dart';
 import 'package:sheepper/screens/sign_in.dart';
 import 'package:sheepper/services/dio.dart';
+import 'package:sheepper/services/provider/order_list.dart';
 import 'package:sheepper/services/provider/product_list.dart';
 import 'package:sheepper/services/share_preference.dart';
 import 'package:thebrioflashynavbar/thebrioflashynavbar.dart';
@@ -17,8 +21,9 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UpdateProduct()),
+        ChangeNotifierProvider(create: (_) => OrderListProvider())
       ],
-      child: const MyApp(),
+      builder: (context, child)=> const MyApp(),
     ),
   );
   SharePreference.init();
@@ -96,6 +101,8 @@ class MyApp extends StatelessWidget {
               title: '',
             ),
         SignIn.routeName: (context) => const SignIn(),
+        OrderList.routeName: (context) => const OrderList(),
+        HistoryOrderList.routeName:(context) => const HistoryOrderList()
       },
     );
   }
@@ -214,8 +221,8 @@ class _NevbarState extends State<Nevbar> {
           title: const Text('LIST'),
         ),
         ThebrioflashynavbarItem(
-          icon: const Icon(Icons.shopping_cart),
-          title: const Text('CART'),
+          icon: const Icon(Icons.history),
+          title: const Text('HISTORY'),
         ),
       ],
     );
