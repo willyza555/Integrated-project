@@ -81,7 +81,12 @@ class _OrderListState extends State<OrderList> {
       resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.all(16),
-        color: Colors.orange[400],
+         decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/orderlist.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

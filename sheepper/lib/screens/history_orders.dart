@@ -24,9 +24,8 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
         .changeLoadState(true);
     try {
       var result = await OrderApi.getBigHistoryOrder();
-      
+
       if (result is InfoResponse) {
-        
         setState(() {
           realResult = result.data;
         });
@@ -53,13 +52,20 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/orderlist.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
         padding: const EdgeInsets.all(16),
         color: Colors.orange[400],
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("History orders", style: Theme.of(context).textTheme.headline1),
+              Text("History orders",
+                  style: Theme.of(context).textTheme.headline1),
               Divider(
                 color: Color.fromARGB(255, 3, 25, 44),
                 thickness: 2,
