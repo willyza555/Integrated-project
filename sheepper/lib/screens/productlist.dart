@@ -1,7 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sheepper/models/product.dart';
+import 'package:sheepper/models/response/info_response.dart';
+import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/button.dart';
 import 'package:sheepper/widgets/common/my_back_button.dart';
 import 'package:sheepper/widgets/common/button.dart';
+import 'package:sheepper/services/api/product.dart';
 
 class productlist extends StatefulWidget {
   const productlist({Key? key}) : super(key: key);
@@ -12,18 +18,111 @@ class productlist extends StatefulWidget {
 }
 
 class _productlistState extends State<productlist> {
+  List<ProductForm1> listproduct = [];
+
+  Future<void> _getproducts() async {
+    try {
+      var result = await ProductApi.getRestaurantInfo();
+      print(result.data[0]);
+      if (result is InfoResponse) {
+        List<ProductForm1> temp = [];
+        for (var e in result.data) {
+          temp.add(ProductForm1.fromJson(e));
+        }
+        setState(() {
+          listproduct = temp;
+        });
+      }
+    } on DioError catch (err) {
+      Alert.errorAlert(err, context);
+    }
+  }
+
+  void initState() {
+    super.initState();
+    _getproducts();
+  }
+
+  Future<void> _add(String name, int price) async {
+    // listproduct.add(productOfFood(name: name, price: price));
+    try {
+      var result = await ProductApi.addProductInfo(
+          productOfFood(name: name, price: price));
+      _getproducts();
+    } on DioError catch (err) {
+      Alert.errorAlert(err, context);
+    }
+  }
+
+  Future<void> _update(String id) async {
+    try {
+      var result = await ProductApi.updateDoneProduct(id);
+      _getproducts();
+    } on DioError catch (err) {
+      Alert.errorAlert(err, context);
+    }
+  }
+
+  Future<void> _delete(String id) async {
+    try {
+      ProductApi.deleteProductInfo(id);
+      _getproducts();
+    } on DioError catch (err) {
+      Alert.errorAlert(err, context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            MyBackButton(),
+    return Scaffold(
+        body: Container(
+      color: Colors.white,
+      child: SingleChildScrollView(
+          child: Column(
+        children: [
+          Stack(children: [
+            Container(
+              height: 250,
+              decoration:BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+              ),
+              
+            ),
+            Column(
+              children: [
+                Container(
+              alignment: Alignment.centerLeft,
+              child: MyBackButton(),
+            ),
             picres(),
-            foodlist(),
-            food(),
-          ],
-        ));
+              ],
+            ),
+            
+          ]),
+          foodlist(
+            add: _add,
+          ),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.5),
+            child: ListView.builder(
+              itemCount: listproduct.length,
+              itemBuilder: (context, index) {
+                return food(
+                  isSoldOut: listproduct[index].isSoldOut,
+                  list: listproduct[index].id,
+                  name: listproduct[index].name,
+                  price: listproduct[index].price,
+                  update: _update,
+                  delete: _delete,
+                );
+              },
+            ),
+          ),
+        ],
+      )),
+    ));
   }
 }
 
@@ -40,47 +139,43 @@ class picres extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             color: Color(0xFFADADAD),
           ),
-          child: 
-          Container(
-          width: 400,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: ShaderMask(
-                shaderCallback: (rect) {
-                  return LinearGradient(
-                          colors: [Colors.white, Colors.transparent],
-                          end: Alignment.bottomCenter,
-                          begin: Alignment.topCenter)
-                      .createShader(
-                          Rect.fromLTRB(0, 0, rect.width, rect.height));
-                },
-                blendMode: BlendMode.dstIn,
-                child: Image.asset(
-                  'assets/res2.png',
-                  fit: BoxFit.fill,
-                )),
+          child: Container(
+            width: 350,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: ShaderMask(
+                  shaderCallback: (rect) {
+                    return LinearGradient(
+                            colors: [Colors.white, Colors.transparent],
+                            end: Alignment.bottomCenter,
+                            begin: Alignment.topCenter)
+                        .createShader(
+                            Rect.fromLTRB(0, 0, rect.width, rect.height));
+                  },
+                  blendMode: BlendMode.dstIn,
+                  child: Image.asset(
+                    'assets/res2.png',
+                    fit: BoxFit.fill,
+                  )),
+            ),
           ),
         ),
-        ),
-        
         Container(
-          alignment: Alignment.bottomCenter,
-          padding: EdgeInsets.only(top: 180),
-          child: Text("RES2",
-              style: TextStyle(color: Colors.black, fontSize: 30.0)),
-        )
+            alignment: Alignment.bottomCenter,
+            padding: EdgeInsets.only(top: 180),
+            child: Text("RES2", style: Theme.of(context).textTheme.headline1))
       ],
     );
   }
 }
 
 class foodlist extends StatefulWidget {
-  const foodlist({Key? key}) : super(key: key);
-
+  const foodlist({Key? key, required this.add}) : super(key: key);
+  final Function add;
   @override
   State<foodlist> createState() => _foodlistState();
 }
@@ -89,21 +184,12 @@ class _foodlistState extends State<foodlist> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(30),
+      padding: EdgeInsets.only(top: 30, left: 30, right: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            "List Of Food",
-            style: TextStyle(
-                fontSize: 15,
-                color: Colors.black,
-                decoration: TextDecoration.none),
-          ),
-          ElevatedButton(
-            onPressed: null,
-            child: Icon(Icons.add),
-          )
+          Text("List Of Food", style: Theme.of(context).textTheme.headline2),
+          addbut(add: widget.add),
         ],
       ),
     );
@@ -111,62 +197,215 @@ class _foodlistState extends State<foodlist> {
 }
 
 class food extends StatefulWidget {
-  const food({Key? key}) : super(key: key);
-
+  const food(
+      {Key? key,
+      required this.name,
+      required this.price,
+      required this.update,
+      required this.list,
+      required this.delete,
+      required this.isSoldOut})
+      : super(key: key);
+  final String name;
+  final int price;
+  final Function update;
+  final String list;
+  final Function delete;
+  final bool isSoldOut;
+  // final void delete;
   @override
   State<food> createState() => _foodState();
 }
 
 class _foodState extends State<food> {
-  
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(30),
-      color: Colors.white,
+      decoration: BoxDecoration(
+        border: Border(
+            bottom: BorderSide(
+          width: 1.0,
+          color: Colors.black,
+        )),
+      ),
+      padding: EdgeInsets.all(20),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset(
-                'assets/res2.png',
-                width: 100,
-                height: 100,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color(0xFFADADAD),
+                  ),
+                  child: Container(
+                    width: 150,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: ShaderMask(
+                          shaderCallback: (rect) {
+                            return LinearGradient(
+                                    colors: [Colors.white, Colors.transparent],
+                                    end: Alignment.bottomCenter,
+                                    begin: Alignment.topCenter)
+                                .createShader(Rect.fromLTRB(
+                                    0, 0, rect.width, rect.height));
+                          },
+                          blendMode: BlendMode.dstIn,
+                          child: Image.asset(
+                            'assets/res2.png',
+                          )),
+                    ),
+                  ),
+                ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "name",
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                        decoration: TextDecoration.none),
+                    widget.name,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
-                  Text(
-                    "100",
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                        decoration: TextDecoration.none),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: Text(widget.price.toString(),
+                        style: Theme.of(context).textTheme.bodyText2),
                   ),
-                  ElevatedButton(
-                    onPressed: null,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                  SizedBox(
+                    width: 80,
+                    height: 20,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        widget.update(widget.list.toString());
+                        print(widget.list.toString());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: widget.isSoldOut ? Colors.red : Colors.orange,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: Text(
+                        "Sold Out",
+                        style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
-                    child: Text("sold out"),
                   )
                 ],
               ),
-              ElevatedButton.icon(onPressed: null, icon: Icon(Icons.delete) , label:Text('delete'),),
+              Material(
+                child: IconButton(
+                    onPressed: () {
+                      widget.delete(widget.list.toString());
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.orange,
+                    )),
+              )
             ],
           )
         ],
       ),
     );
+  }
+}
+
+class addbut extends StatefulWidget {
+  const addbut({Key? key, required this.add}) : super(key: key);
+  final Function add;
+  @override
+  State<addbut> createState() => _addbutState();
+}
+
+class _addbutState extends State<addbut> {
+  var name = TextEditingController();
+  var price = TextEditingController();
+  void clearText() {
+    name.clear();
+    price.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Material(
+      child: IconButton(
+        onPressed: () => showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+                  actions: <Widget>[
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            onPressed: () => Navigator.pop(context, 'Close'),
+                            icon: Icon(Icons.close),
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'ADD PRODUCT',
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                        TextFormField(
+                          controller: name,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.restaurant),
+                            label: Text('Name of product *'),
+                          ),
+                          onSaved: (String? value) {},
+                          validator: (String? value) {
+                            return (value != null)
+                                ? 'Please enter your product name'
+                                : null;
+                          },
+                        ),
+                        TextFormField(
+                          controller: price,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.price_change),
+                            label: Text('Price *'),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            widget.add(name.text.toString(),
+                                int.parse(price.text.toString()));
+                            clearText();
+                            Navigator.pop(context, 'Close');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.orange,
+                            padding: const EdgeInsets.all(0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            "ADD",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                )),
+        icon: Icon(Icons.add),
+      ),
+    ));
   }
 }

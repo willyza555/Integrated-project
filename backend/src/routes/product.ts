@@ -41,8 +41,8 @@ productRoute.delete("/:id", async (req, res) => {
 	return responseHandler(res, await DeleteProduct(req, product_id));
 });
 
-productRoute.patch("/done", async (req, res) => {
-	const product_id = new Types.ObjectId(req.body.product_id);
+productRoute.patch("/done/:id", async (req, res) => {
+	const product_id = new Types.ObjectId(req.params.id);
 	return responseHandler(res, await ProductSoldOut(req, product_id));
 });
 

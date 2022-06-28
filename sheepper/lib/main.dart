@@ -58,26 +58,27 @@ class MyApp extends StatelessWidget {
               fontSize: 38,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF323B69)),
-          //     headline4: GoogleFonts.poppins(
-          //         fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
-          //     headline5: GoogleFonts.poppins(
-          //       fontSize: 20,
-          //       fontWeight: FontWeight.w600,
-          //       color: const Color.fromARGB(255, 5, 5, 5),
-          //     ),
-          //     headline6: GoogleFonts.poppins(
-          //       fontSize: 16,
-          //       fontWeight: FontWeight.w500,
-          //       color: const Color.fromARGB(80, 0, 0, 0),
-          //     ),
-          //     bodyText1: GoogleFonts.poppins(
-          //         fontSize: 16,
-          //         fontWeight: FontWeight.w500,
-          //         color: const Color(0xff0E2B39)),
-          //     bodyText2: GoogleFonts.poppins(
-          //       fontSize: 14,
-          //       color: const Color(0xFF022B3A),
-          //       fontWeight: FontWeight.w600,
+              headline4: GoogleFonts.poppins(
+                  fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+              headline5: GoogleFonts.poppins(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: const Color.fromARGB(255, 5, 5, 5),
+              ),
+              // headline6: GoogleFonts.poppins(
+              //   fontSize: 16,
+              //   fontWeight: FontWeight.w500,
+              //   color: const Color.fromARGB(80, 0, 0, 0),
+              // ),
+              bodyText1: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xff0E2B39)),
+              bodyText2: GoogleFonts.poppins(
+                fontSize: 14,
+                color: const Color(0xFF022B3A),
+                fontWeight: FontWeight.w600,
+              )
         ),
         //     subtitle1: GoogleFonts.poppins(fontSize: 14)),
       ),
@@ -86,7 +87,7 @@ class MyApp extends StatelessWidget {
           duration: 2000,
           centered: true,
           splash: 'assets/sheepper_logo.png',
-          nextScreen: const productlist(),
+          nextScreen: const SignIn(),
           splashTransition: SplashTransition.fadeTransition,
           pageTransitionType: PageTransitionType.fade,
         ),
