@@ -61,7 +61,7 @@ class OrderCard extends StatelessWidget {
                                 .withOpacity(0.5),
                           ),
                           child: Text(
-                            "Order ${order.id}",
+                            "Order ${order.seq}",
                             maxLines: 1,
                             softWrap: false,
                             overflow: TextOverflow.fade,

@@ -48,32 +48,6 @@ class _OrderListState extends State<OrderList> {
     _getorder();
   }
 
-  // final List<Order> orders = [
-  //   Order(
-  //       id: "154",
-  //       resid: "222",
-  //       cusid: "58555",
-  //       riderid: "848484",
-  //       total: 2,
-  //       isDone: false,
-  //       ),
-  //   Order(
-  //       id: "566",
-  //       resid: "222",
-  //       cusid: "58555",
-  //       riderid: "848484",
-  //       total: 2,
-  //       isDone: false,
-  //       ),
-  //   Order(
-  //       id: "8484",
-  //       resid: "222",
-  //       cusid: "58555",
-  //       riderid: "848484",
-  //       total: 2,
-  //       isDone: false,
-  //   )
-  // ];
 
   @override
   Widget build(BuildContext context) {

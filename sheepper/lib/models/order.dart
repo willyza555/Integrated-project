@@ -5,6 +5,7 @@ class Order {
   final String riderid;
   final int total;
   final bool isDone;
+  final int seq;
   final String cus_number;
   final String firstname;
   final String lastname;
@@ -16,22 +17,23 @@ class Order {
       required this.riderid,
       required this.total,
       required this.isDone,
+      required this.seq,
       required this.cus_number,
       required this.firstname,
       required this.lastname});
 
   factory Order.fromJson(Map<String, dynamic> json, Map<String, dynamic> info) {
     return Order(
-      id: json['_id'],
-      resid: json['res_id'],
-      cusid: json['customer_id'],
-      riderid: json['rider_id'],
-      total: json['total'],
-      isDone: json['isDone'],
-      cus_number: info['tel'],
-      firstname: info['firstname'],
-      lastname: info['lastname']
-    );
+        id: json['_id'],
+        resid: json['res_id'],
+        cusid: json['customer_id'],
+        riderid: json['rider_id'],
+        total: json['total'],
+        isDone: json['isDone'],
+        seq: json['seq'],
+        cus_number: info['tel'],
+        firstname: info['firstname'],
+        lastname: info['lastname']);
   }
 
   Map<String, dynamic> toJson() {
@@ -41,7 +43,7 @@ class Order {
       'riderid': riderid,
       'total': total,
       'isDone': isDone,
-
+      'seq': seq,
     };
   }
 }
