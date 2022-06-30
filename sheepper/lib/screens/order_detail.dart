@@ -38,7 +38,9 @@ class _OrderDetailState extends State<OrderDetail> {
       var result = await OrderApi.getOrder("62af6e1068e9dd0d9ab5b448");
       if (result is InfoResponse) {
         setState(() {
-          order = OrderModel.fromJson(result.data["order"]);
+          order = OrderModel.fromJson(
+            result.data["order"], result.data["order"]
+          );
           var temp = result.data["order_detail"]
               .map<OrderDetailModel>((e) => OrderDetailModel.fromJson(e));
 

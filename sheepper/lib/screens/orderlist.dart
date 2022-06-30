@@ -78,7 +78,7 @@ class _OrderListState extends State<OrderList> {
                           itemCount: realResult["orders"].length,
                           itemBuilder: (BuildContext context, int index) {
                             return OrderCard(
-                              order: Order.fromJson(realResult["orders"][index],
+                              order: OrderModel.fromJson(realResult["orders"][index],
                                   realResult["customer"][index]),
                               showInfoHandler: _showInfo,
                             );

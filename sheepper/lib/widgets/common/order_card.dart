@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sheepper/models/order.dart';
 
 class OrderCard extends StatelessWidget {
-  final Order order;
+  final OrderModel order;
   final Function showInfoHandler;
 
   const OrderCard({
@@ -22,7 +22,7 @@ class OrderCard extends StatelessWidget {
     );
 
     return InkWell(
-      onTap: () => showInfoHandler(order.id),
+      onTap: () => showInfoHandler(order.order_id),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: borderRadius,
@@ -72,7 +72,7 @@ class OrderCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text("Rider Id : ${order.riderid.substring(19)}",
+                        Text("Rider Id : ${order.rider_id!.substring(19)}",
                             style: detailStyle),
                         Flexible(
                           child: Text("Customer: ${order.firstname} ${order.lastname}",
