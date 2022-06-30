@@ -11,7 +11,9 @@ import {
 	userSchema,
 	orderSchema,
 	orderDetailSchema,
+	counterSchema,
 } from "./schema";
+import Counter from "@/interface/models/Counter";
 
 export const User = mongoose.model<User>("User", userSchema, "User");
 export const Restaurant = mongoose.model<Restaurant>(
@@ -29,4 +31,10 @@ export const OrderDetail = mongoose.model<OrderDetail>(
 	"OrderDetail",
 	orderDetailSchema,
 	"OrderDetail"
+);
+
+export const Counter = mongoose.model<Counter>(
+	"Counter",
+	counterSchema,
+	"Counter"
 );

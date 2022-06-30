@@ -1,4 +1,10 @@
-import { Order, OrderDetail, Product, Restaurant } from "@/database/models";
+import {
+	Counter,
+	Order,
+	OrderDetail,
+	Product,
+	Restaurant,
+} from "@/database/models";
 import { CreateOrderPost, OrderUpdate } from "@/interface/api/Order";
 import { Request } from "express";
 import { ObjectId } from "mongoose";
@@ -24,11 +30,18 @@ export const CreateOrder = async (req: Request, body: CreateOrderPost) => {
 		const total =
 			product1.price * body.detail[0].quantity +
 			product2.price * body.detail[1].quantity;
+		const orderCounter = await Counter.findOne({ type: "order" }).exec();
+		await Counter.updateOne(
+			{ type: "order" },
+			{ $set: { seq: orderCounter.seq + 1 } }
+		);
+		const newCounter = await Counter.findOne({ type: "order" }).exec();
 		try {
 			const new_order = await Order.create({
 				customer_id: user_id,
 				res_id: product1.res_id,
 				total: total,
+				seq: newCounter.seq,
 				...body,
 			});
 			await OrderDetail.create({
@@ -60,6 +73,7 @@ export const GetOrders = async (req: Request) => {
 		const res_id = await Restaurant.findOne({ owner_id: user_id })
 			.select("_id")
 			.exec();
+
 		const orders = await Order.find({ res_id, isDone: false }).exec();
 		return infoResponse(orders, "Get order success", 200);
 	} catch (error) {

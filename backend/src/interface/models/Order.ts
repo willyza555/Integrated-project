@@ -5,5 +5,6 @@ export default interface Order {
 	customer_id: ObjectId;
 	total: number;
 	rider_id: ObjectId;
+	seq: number;
 	isDone: boolean;
 }

@@ -4,11 +4,28 @@ import Restaurant from "@/interface/models/Restaurant";
 import Product from "@/interface/models/Product";
 import Order from "@/interface/models/Order";
 import OrderDetail from "@/interface/models/OrderDetail";
+import Counter from "@/interface/models/Counter";
 
 const validateEmail = function (email) {
 	var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	return re.test(email);
 };
+
+export enum CounterType {
+	order = "order",
+}
+
+export const counterSchema = new Schema<Counter>({
+	seq: {
+		type: Number,
+		required: false,
+	},
+	type: {
+		type: String,
+		required: true,
+		enum: Object.values(CounterType),
+	},
+});
 
 export const userSchema = new Schema<User>({
 	email: {
@@ -111,6 +128,10 @@ export const orderSchema = new Schema<Order>({
 		type: Boolean,
 		required: true,
 		default: false,
+	},
+	seq: {
+		type: Number,
+		required: true,
 	},
 });
 
