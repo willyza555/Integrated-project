@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sheepper/models/product.dart';
 import 'package:sheepper/models/response/info_response.dart';
 import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/button.dart';
 import 'package:sheepper/widgets/common/my_back_button.dart';
-import 'package:sheepper/widgets/common/button.dart';
 import 'package:sheepper/services/api/product.dart';
+import 'package:image_picker/image_picker.dart';
 
 class productlist extends StatefulWidget {
   const productlist({Key? key}) : super(key: key);
@@ -83,22 +88,22 @@ class _productlistState extends State<productlist> {
           Stack(children: [
             Container(
               height: 250,
-              decoration:BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.orange,
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
               ),
-              
             ),
             Column(
               children: [
                 Container(
-              alignment: Alignment.centerLeft,
-              child: MyBackButton(),
-            ),
-            picres(),
+                  alignment: Alignment.centerLeft,
+                  child: MyBackButton(),
+                ),
+                picres(),
               ],
             ),
-            
           ]),
           foodlist(
             add: _add,
@@ -327,85 +332,197 @@ class addbut extends StatefulWidget {
 }
 
 class _addbutState extends State<addbut> {
-  var name = TextEditingController();
-  var price = TextEditingController();
-  void clearText() {
-    name.clear();
-    price.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Material(
       child: IconButton(
-        onPressed: () => showDialog(
+        onPressed: () {
+          showDialog(
             context: context,
-            builder: (BuildContext context) => AlertDialog(
-                  actions: <Widget>[
-                    Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            onPressed: () => Navigator.pop(context, 'Close'),
-                            icon: Icon(Icons.close),
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          'ADD PRODUCT',
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
-                        TextFormField(
-                          controller: name,
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.restaurant),
-                            label: Text('Name of product *'),
-                          ),
-                          onSaved: (String? value) {},
-                          validator: (String? value) {
-                            return (value != null)
-                                ? 'Please enter your product name'
-                                : null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: price,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.price_change),
-                            label: Text('Price *'),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            widget.add(name.text.toString(),
-                                int.parse(price.text.toString()));
-                            clearText();
-                            Navigator.pop(context, 'Close');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.orange,
-                            padding: const EdgeInsets.all(0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            "ADD",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                )),
+            builder: (_) => AddDialog(
+              add: widget.add,
+            ),
+          );
+        },
         icon: Icon(Icons.add),
       ),
     ));
+  }
+}
+
+class AddDialog extends StatefulWidget {
+  const AddDialog({Key? key, required this.add}) : super(key: key);
+  final Function add;
+
+  @override
+  State<AddDialog> createState() => _AddDialogState();
+}
+
+class _AddDialogState extends State<AddDialog> with TickerProviderStateMixin {
+  var name = TextEditingController();
+  var price = TextEditingController();
+  String imgpath = "";
+  late File tmpFile;
+  File? image;
+  late AnimationController controller;
+  late Animation<double> scaleAnimation;
+
+  void clearText() {
+    name.clear();
+    price.clear();
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imgTemp = File(image.path);
+      setState(() {
+        imgpath = image.path;
+        print(imgpath);
+        this.image = imgTemp;
+      });
+    } catch (e) {
+      print("fail $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 450));
+    scaleAnimation =
+        CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
+
+    controller.addListener(() {
+      setState(() {});
+    });
+
+    controller.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Material(
+        borderRadius: BorderRadius.circular(15.0),
+        color: Colors.white,
+        child: ScaleTransition(
+          scale: scaleAnimation,
+          child: Container(
+            height: 400,
+            width: 350,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () => Navigator.pop(context, 'Close'),
+                    icon: Icon(Icons.close),
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  'ADD PRODUCT',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+                Container(
+                  padding: EdgeInsets.only(right:30, left: 30),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: name,
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.restaurant),
+                          label: Text('Name of product *'),
+                        ),
+                        onSaved: (String? value) {},
+                        validator: (String? value) {
+                          return (value != null)
+                              ? 'Please enter your product name'
+                              : null;
+                        },
+                      ),
+                      TextFormField(
+                        controller: price,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.price_change),
+                          label: Text('Price *'),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10, top: 10),
+                        // padding: EdgeInsets.only(bottom: 10, top: 10),
+                        child: Row(
+                          children: [
+                            Icon(Icons.image,
+                                color: Color.fromARGB(255, 127, 120, 120)),
+                            Container(
+                              margin: EdgeInsets.only(right: 15, left: 15),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  pickImage();
+                                },
+                                child: Text("Add image"),
+                                style: ButtonStyle(
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.only(
+                                            bottom: 4,
+                                            top: 4,
+                                            left: 10,
+                                            right: 10))),
+                              ),
+                            ),
+                            image != null
+                                ? Image.file(
+                                    image!,
+                                    fit: BoxFit.cover,
+                                    width: 100,
+                                    height: 100,
+                                  )
+                                : Text("No image selected"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      widget.add(name.text.toString(),
+                          int.parse(price.text.toString()));
+                      clearText();
+                      Navigator.pop(context, 'Close');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.orange,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: Text(
+                      "ADD",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

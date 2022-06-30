@@ -1,19 +1,19 @@
 class ProductForm {
   final String id;
-  final String resid;
+  final String res_id;
   final String name;
   final int price;
 
   ProductForm(
       {required this.id,
-      required this.resid,
+      required this.res_id,
       required this.name,
       required this.price});
 
   factory ProductForm.fromJson(Map<String, dynamic> json) {
     return ProductForm(
       id: json['_id'],
-      resid: json['resid'],
+      res_id: json['res_id'],
       name: json['name'],
       price: json['price'],
     );
@@ -21,7 +21,7 @@ class ProductForm {
 
   Map<String, dynamic> toJson() {
     return {
-      'resid': resid,
+      'res_id': res_id,
       'name': name,
       'price': price,
     };
@@ -55,14 +55,14 @@ class productOfFood{
 
 class ProductForm1 {
   final String id;
-  final String resid;
+  final String res_id;
   final String name;
   final int price;
   final bool isSoldOut;
 
   ProductForm1(
       {required this.id,
-      required this.resid,
+      required this.res_id,
       required this.name,
       required this.price,
       required this.isSoldOut});
@@ -70,7 +70,7 @@ class ProductForm1 {
   factory ProductForm1.fromJson(Map<String, dynamic> json) {
     return ProductForm1(
       id: json['_id'],
-      resid: json['res_id'],
+      res_id: json['res_id'],
       name: json['name'],
       price: json['price'],
       isSoldOut: json['isSoldOut']
@@ -79,7 +79,7 @@ class ProductForm1 {
 
   Map<String, dynamic> toJson() {
     return {
-      'resid': resid,
+      'res_id': res_id,
       'name': name,
       'price': price,
       'isSoldOut': isSoldOut,
