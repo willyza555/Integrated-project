@@ -4,6 +4,7 @@ import {
 	CreateOrder,
 	DeleteOrder,
 	GetOldOrder,
+	GetHistoryOrders,
 	GetOrder,
 	GetOrders,
 	OrderDone,
@@ -24,6 +25,10 @@ orderRoute.delete("/delete/:order_id", async (req, res) => {
 
 orderRoute.get("/", async (req, res) => {
 	return responseHandler(res, await GetOrders(req));
+});
+
+orderRoute.get("/history", async (req, res) => {
+	return responseHandler(res, await GetHistoryOrders(req));
 });
 
 orderRoute.get("/:order_id", async (req, res) => {

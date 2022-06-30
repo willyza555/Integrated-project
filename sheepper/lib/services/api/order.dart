@@ -5,7 +5,7 @@ import 'package:sheepper/services/dio.dart';
 import 'package:sheepper/services/share_preference.dart';
 
 class OrderApi {
-  static Future<dynamic> getOrders() async {
+  static Future<dynamic> getBigOrder() async {
     DioInstance.dio.options.headers["authorization"] =
         "Bearer " + SharePreference.prefs.getString("token").toString();
     final response = await DioInstance.dio.get("/order");
@@ -66,6 +66,18 @@ class OrderApi {
     DioInstance.dio.options.headers["authorization"] =
         "Bearer " + SharePreference.prefs.getString("token").toString();
     final response = await DioInstance.dio.patch("/order/done/$orderId");
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      return ErrorResponse.fromJson(response.data);
+    } else {
+      return InfoResponse.fromJson(response.data);
+    }
+  }
+
+
+  static Future<dynamic> getBigHistoryOrder() async {
+    DioInstance.dio.options.headers["authorization"] =
+        "Bearer " + SharePreference.prefs.getString("token").toString();
+    final response = await DioInstance.dio.get("/order/history");
     if (response.statusCode != 200 && response.statusCode != 201) {
       return ErrorResponse.fromJson(response.data);
     } else {

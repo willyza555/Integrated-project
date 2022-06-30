@@ -3,13 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sheepper/screens/history_order.dart';
 import 'package:sheepper/screens/order_detail.dart';
+import 'package:sheepper/screens/history_orders.dart';
+import 'package:sheepper/screens/orderlist.dart';
 import 'package:sheepper/screens/product.dart';
+import 'package:sheepper/screens/profile.dart';
 import 'package:sheepper/screens/sign_in.dart';
 import 'package:sheepper/services/dio.dart';
 import 'package:sheepper/services/provider/history_order_detail_list.dart';
 import 'package:sheepper/services/provider/history_order_list.dart';
 import 'package:sheepper/services/provider/order_detail_list.dart';
 import 'package:sheepper/services/provider/product_of_order_list.dart';
+import 'package:sheepper/services/provider/order_list.dart';
 import 'package:sheepper/services/share_preference.dart';
 import 'package:thebrioflashynavbar/thebrioflashynavbar.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -28,8 +32,9 @@ void main() {
         ChangeNotifierProvider(create: (_) => OrderListProvider()),
         ChangeNotifierProvider(create: (_) => HistoryOrderDetailListProvider()),
         ChangeNotifierProvider(create: (_) => HistoryOrderListProvider()),
+        ChangeNotifierProvider(create: (_) => OrderListProvider())
       ],
-      child: const MyApp(),
+      builder: (context, child) => const MyApp(),
     ),
   );
   SharePreference.init();
@@ -111,6 +116,8 @@ class MyApp extends StatelessWidget {
         SignIn.routeName: (context) => const SignIn(),
         OrderDetail.routeName: (context) => const OrderDetail(),
         HistoryOrder.routeName: (context) => const HistoryOrder(),
+        OrderList.routeName: (context) => const OrderList(),
+        HistoryOrderList.routeName: (context) => const HistoryOrderList()
       },
     );
   }

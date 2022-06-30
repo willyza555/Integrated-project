@@ -7,4 +7,5 @@ export default interface Order {
 	rider_id: ObjectId;
 	seq: number;
 	isDone: boolean;
+	seq: number;
 }

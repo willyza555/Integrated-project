@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class OrderModel {
   String order_id = "";
   String res_id = "";
@@ -6,20 +8,29 @@ class OrderModel {
   int seq = 0;
   String? rider_id;
   bool isDone = false;
+  final String cus_number;
+  final String firstname;
+  final String lastname;
 
-  OrderModel();
+  OrderModel(
+      {required this.cus_number,
+      required this.firstname,
+      required this.lastname});
 
-  OrderModel.set({
-    required this.order_id,
-    required this.res_id,
-    required this.cus_id,
-    required this.total,
-    required this.isDone,
-    required this.seq,
-    this.rider_id,
-  });
+  OrderModel.set(
+      {required this.order_id,
+      required this.res_id,
+      required this.cus_id,
+      required this.total,
+      required this.isDone,
+      required this.seq,
+      this.rider_id,
+      required this.cus_number,
+      required this.firstname,
+      required this.lastname});
 
-  factory OrderModel.fromJson(Map<String, dynamic> data) {
+  factory OrderModel.fromJson(
+      Map<String, dynamic> data, Map<String?, dynamic> info) {
     return OrderModel.set(
         order_id: data['_id'],
         res_id: data['res_id'],
@@ -27,10 +38,13 @@ class OrderModel {
         total: data['total'],
         seq: data['seq'],
         isDone: data['isDone'],
-        rider_id: data['rider_id']);
+        rider_id: data['rider_id'],
+        cus_number: info['tel'],
+        firstname: info['firstname'],
+        lastname: info['lastname']);
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson1() {
     return {
       'order_id': order_id,
       'res_id': res_id,
