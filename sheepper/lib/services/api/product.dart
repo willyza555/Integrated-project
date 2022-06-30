@@ -72,7 +72,8 @@ class ProductApi {
   static Future<dynamic> updateDoneProduct(String id) async {
     DioInstance.dio.options.headers["authorization"] =
         "Bearer " + SharePreference.prefs.getString("token").toString();
-    final response = await DioInstance.dio.patch("/product/done/$id");
+    final response =
+        await DioInstance.dio.patch("/product/done/$id");
 
     if (response.statusCode != 200) {
       return ErrorResponse.fromJson(response.data);

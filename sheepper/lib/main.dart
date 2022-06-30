@@ -20,6 +20,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+import 'package:sheepper/screens/productlist.dart';
 
 import 'services/provider/order_list.dart';
 
@@ -77,26 +78,27 @@ class MyApp extends StatelessWidget {
               fontSize: 38,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF323B69)),
-          //     headline4: GoogleFonts.poppins(
-          //         fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
-          //     headline5: GoogleFonts.poppins(
-          //       fontSize: 20,
-          //       fontWeight: FontWeight.w600,
-          //       color: const Color.fromARGB(255, 5, 5, 5),
-          //     ),
-          //     headline6: GoogleFonts.poppins(
-          //       fontSize: 16,
-          //       fontWeight: FontWeight.w500,
-          //       color: const Color.fromARGB(80, 0, 0, 0),
-          //     ),
-          //     bodyText1: GoogleFonts.poppins(
-          //         fontSize: 16,
-          //         fontWeight: FontWeight.w500,
-          //         color: const Color(0xff0E2B39)),
-          //     bodyText2: GoogleFonts.poppins(
-          //       fontSize: 14,
-          //       color: const Color(0xFF022B3A),
-          //       fontWeight: FontWeight.w600,
+              headline4: GoogleFonts.poppins(
+                  fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+              headline5: GoogleFonts.poppins(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: const Color.fromARGB(255, 5, 5, 5),
+              ),
+              // headline6: GoogleFonts.poppins(
+              //   fontSize: 16,
+              //   fontWeight: FontWeight.w500,
+              //   color: const Color.fromARGB(80, 0, 0, 0),
+              // ),
+              bodyText1: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xff0E2B39)),
+              bodyText2: GoogleFonts.poppins(
+                fontSize: 14,
+                color: const Color(0xFF022B3A),
+                fontWeight: FontWeight.w600,
+              )
         ),
         //     subtitle1: GoogleFonts.poppins(fontSize: 14)),
       ),
@@ -118,6 +120,7 @@ class MyApp extends StatelessWidget {
         HistoryOrder.routeName: (context) => const HistoryOrder(),
         OrderList.routeName: (context) => const OrderList(),
         HistoryOrderList.routeName: (context) => const HistoryOrderList()
+        productlist.routeName: (context) => const productlist(),
       },
     );
   }

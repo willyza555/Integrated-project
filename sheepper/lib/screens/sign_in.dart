@@ -6,7 +6,6 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:sheepper/main.dart';
 import 'package:sheepper/models/response/info_response.dart';
-
 import 'package:sheepper/services/api/user.dart';
 import 'package:sheepper/services/dio.dart';
 import 'package:sheepper/services/share_preference.dart';

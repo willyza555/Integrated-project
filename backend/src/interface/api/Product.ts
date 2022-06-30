@@ -1,5 +1,3 @@
-import { ObjectId } from "mongoose";
-
 export interface ProductPost {
 	name: string;
 	price: number;

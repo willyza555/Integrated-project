@@ -196,6 +196,10 @@ export const ProductSoldOut = async (
 			owner_id: user_id,
 		}).exec();
 
+		const soldout = await Product.findOne({
+			_id: product_id,
+		}).select('isSoldOut').exec();
+		console.log(soldout);
 		if (restaurant == null) {
 			return genericError(
 				"Unauthorize: User is not own this restaurant",
@@ -205,7 +209,7 @@ export const ProductSoldOut = async (
 		try {
 			await Product.updateOne(
 				{ _id: product_id },
-				{ $set: { isSoldOut: true } }
+				{ $set: { isSoldOut: !soldout.isSoldOut} }
 			).exec();
 		} catch (error) {
 			return genericError(error.message, 400);

@@ -28,7 +28,7 @@ class ProductForm {
   }
 }
 
-class productOfFood {
+class productOfFood{
   String name;
   int price;
 
@@ -44,7 +44,7 @@ class productOfFood {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String,dynamic> toJson(){
     return {
       'name': name,
       'price': price,
@@ -68,11 +68,12 @@ class ProductForm1 {
 
   factory ProductForm1.fromJson(Map<String, dynamic> json) {
     return ProductForm1(
-        id: json['_id'],
-        res_id: json['res_id'],
-        name: json['name'],
-        price: json['price'],
-        isSoldOut: json['isSoldOut']);
+      id: json['_id'],
+      res_id: json['res_id'],
+      name: json['name'],
+      price: json['price'],
+      isSoldOut: json['isSoldOut']
+    );
   }
 
   Map<String, dynamic> toJson() {
