@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> screen = <Widget>[
-      Product(),
+      OrderDetail(),
       OrderDetail(),
       OrderDetail(),
       OrderDetail(),

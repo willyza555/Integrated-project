@@ -21,9 +21,66 @@ class ProductForm {
 
   Map<String, dynamic> toJson() {
     return {
-      'resid': res_id,
+      'res_id': res_id,
       'name': name,
       'price': price,
+    };
+  }
+}
+
+class productOfFood {
+  String name;
+  int price;
+
+  productOfFood({
+    required this.name,
+    required this.price,
+  });
+
+  factory productOfFood.fromJson(Map<String, dynamic> json) {
+    return productOfFood(
+      name: json['name'],
+      price: json['price'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'price': price,
+    };
+  }
+}
+
+class ProductForm1 {
+  final String id;
+  final String res_id;
+  final String name;
+  final int price;
+  final bool isSoldOut;
+
+  ProductForm1(
+      {required this.id,
+      required this.res_id,
+      required this.name,
+      required this.price,
+      required this.isSoldOut});
+
+  factory ProductForm1.fromJson(Map<String, dynamic> json) {
+    return ProductForm1(
+        id: json['_id'],
+        res_id: json['res_id'],
+        name: json['name'],
+        price: json['price'],
+        isSoldOut: json['isSoldOut']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'res_id': res_id,
+      'name': name,
+      'price': price,
+      'isSoldOut': isSoldOut,
     };
   }
 }

@@ -6,6 +6,18 @@ import 'package:sheepper/services/share_preference.dart';
 
 class ProductApi {
   //Get all products
+  static Future<dynamic> getRestaurantInfo() async {
+    DioInstance.dio.options.headers["authorization"] =
+        "Bearer " + SharePreference.prefs.getString("token").toString();
+    final response = await DioInstance.dio.get("/product");
+    if (response.statusCode != 200) {
+      return ErrorResponse.fromJson(response.data);
+    } else {
+      return InfoResponse.fromJson(response.data);
+    }
+  }
+
+  //Get a product
   static Future<dynamic> getProductInfo(String id) async {
     DioInstance.dio.options.headers["authorization"] =
         "Bearer " + SharePreference.prefs.getString("token").toString();
@@ -17,13 +29,12 @@ class ProductApi {
     }
   }
 
-  //Add new product
-  static Future<dynamic> addProductInfo(ProductForm data) async {
+//Add new product
+  static Future<dynamic> addProductInfo(productOfFood data) async {
     DioInstance.dio.options.headers["authorization"] =
         "Bearer " + SharePreference.prefs.getString("token").toString();
     final response =
-        await DioInstance.dio.post("/product", data: data.toJson());
-
+        await DioInstance.dio.post("/product/add", data: data.toJson());
     if (response.statusCode != 200) {
       return ErrorResponse.fromJson(response.data);
     } else {
@@ -50,6 +61,18 @@ class ProductApi {
     DioInstance.dio.options.headers["authorization"] =
         "Bearer " + SharePreference.prefs.getString("token").toString();
     final response = await DioInstance.dio.delete("/product/$id");
+
+    if (response.statusCode != 200) {
+      return ErrorResponse.fromJson(response.data);
+    } else {
+      return InfoResponse.fromJson(response.data);
+    }
+  }
+
+  static Future<dynamic> updateDoneProduct(String id) async {
+    DioInstance.dio.options.headers["authorization"] =
+        "Bearer " + SharePreference.prefs.getString("token").toString();
+    final response = await DioInstance.dio.patch("/product/done/$id");
 
     if (response.statusCode != 200) {
       return ErrorResponse.fromJson(response.data);

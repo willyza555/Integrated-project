@@ -42,6 +42,8 @@ dependencies:
      wave: ^0.2.2
      animated_splash_screen: ^1.2.0
      page_transition: ^2.0.7
+     path_provider: ^2.0.5
+     image_picker: ^0.8.5+3
 
 dev_dependencies:
      flutter_test:
