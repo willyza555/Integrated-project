@@ -15,7 +15,7 @@ import 'package:sheepper/widgets/common/alert.dart';
 
 class OrderDetailCard extends StatelessWidget {
   final OrderDetailModel orderDetail;
-  final ProductForm productDetail;
+  final ProductForm1 productDetail;
   //final Function onDecrease;
 
   const OrderDetailCard({

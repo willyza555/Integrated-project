@@ -5,7 +5,6 @@ import 'package:sheepper/screens/history_order.dart';
 import 'package:sheepper/screens/order_detail.dart';
 import 'package:sheepper/screens/history_orders.dart';
 import 'package:sheepper/screens/orderlist.dart';
-import 'package:sheepper/screens/product.dart';
 import 'package:sheepper/screens/profile.dart';
 import 'package:sheepper/screens/sign_in.dart';
 import 'package:sheepper/services/dio.dart';
@@ -61,45 +60,44 @@ class MyApp extends StatelessWidget {
         //   color: Color.fromARGB(255, 84, 156, 160),
         // ),
         textTheme: TextTheme(
-          //     headline3: GoogleFonts.poppins(
-          //       fontSize: 24,
-          //       fontWeight: FontWeight.w600,
-          //       color: const Color(0xFF24577A),
-          //     ),
-          caption: GoogleFonts.poppins(
-              fontSize: 15,
-              fontWeight: FontWeight.w300,
-              color: const Color(0xFF24577A)),
-          headline2: GoogleFonts.poppins(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF24577A)),
-          headline1: GoogleFonts.poppins(
-              fontSize: 38,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF323B69)),
-              headline4: GoogleFonts.poppins(
-                  fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
-              headline5: GoogleFonts.poppins(
+            //     headline3: GoogleFonts.poppins(
+            //       fontSize: 24,
+            //       fontWeight: FontWeight.w600,
+            //       color: const Color(0xFF24577A),
+            //     ),
+            caption: GoogleFonts.poppins(
+                fontSize: 15,
+                fontWeight: FontWeight.w300,
+                color: const Color(0xFF24577A)),
+            headline2: GoogleFonts.poppins(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: const Color.fromARGB(255, 5, 5, 5),
-              ),
-              // headline6: GoogleFonts.poppins(
-              //   fontSize: 16,
-              //   fontWeight: FontWeight.w500,
-              //   color: const Color.fromARGB(80, 0, 0, 0),
-              // ),
-              bodyText1: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xff0E2B39)),
-              bodyText2: GoogleFonts.poppins(
-                fontSize: 14,
-                color: const Color(0xFF022B3A),
+                color: const Color(0xFF24577A)),
+            headline1: GoogleFonts.poppins(
+                fontSize: 38,
                 fontWeight: FontWeight.w600,
-              )
-        ),
+                color: const Color(0xFF323B69)),
+            headline4: GoogleFonts.poppins(
+                fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+            headline5: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: const Color.fromARGB(255, 5, 5, 5),
+            ),
+            // headline6: GoogleFonts.poppins(
+            //   fontSize: 16,
+            //   fontWeight: FontWeight.w500,
+            //   color: const Color.fromARGB(80, 0, 0, 0),
+            // ),
+            bodyText1: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xff0E2B39)),
+            bodyText2: GoogleFonts.poppins(
+              fontSize: 14,
+              color: const Color(0xFF022B3A),
+              fontWeight: FontWeight.w600,
+            )),
         //     subtitle1: GoogleFonts.poppins(fontSize: 14)),
       ),
       home: Scaffold(
@@ -113,14 +111,13 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        Product.routeName: (context) => const Product(),
         MyHomePage.routeName: (context) => const MyHomePage(),
         SignIn.routeName: (context) => const SignIn(),
         OrderDetail.routeName: (context) => const OrderDetail(),
         HistoryOrder.routeName: (context) => const HistoryOrder(),
         OrderList.routeName: (context) => const OrderList(),
-        HistoryOrderList.routeName: (context) => const HistoryOrderList()
-        productlist.routeName: (context) => const productlist(),
+        HistoryOrderList.routeName: (context) => const HistoryOrderList(),
+        Productlist.routeName: (context) => const Productlist(),
       },
     );
   }
@@ -153,10 +150,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> screen = <Widget>[
-      OrderDetail(),
-      OrderDetail(),
-      OrderDetail(),
-      OrderDetail(),
+      Profile(),
+      Productlist(),
+      OrderList(),
+      HistoryOrderList(),
     ];
     return Scaffold(
       // appBar: AppBar(
@@ -213,11 +210,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           ThebrioflashynavbarItem(
             icon: const Icon(Icons.list_alt),
-            title: const Text('LIST'),
+            title: const Text('ORDER'),
           ),
           ThebrioflashynavbarItem(
             icon: const Icon(Icons.shopping_cart),
-            title: const Text('CART'),
+            title: const Text('HISTORY'),
           ),
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.

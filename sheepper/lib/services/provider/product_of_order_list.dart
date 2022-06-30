@@ -2,10 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:sheepper/models/product.dart';
 
 class UpdateProductOfOrder with ChangeNotifier {
-  List<ProductForm> product = [];
+  List<ProductForm1> product = [];
 
-  void updateAmountOfProduct(ProductForm newProduct) {
+  void updateAmountOfProduct(ProductForm1 newProduct) {
     product.add(newProduct);
+    notifyListeners();
+  }
+
+  void deleteList() {
+    product = [];
     notifyListeners();
   }
 }

@@ -17,8 +17,8 @@ import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/oreder_detail_card.dart';
 
 class HistoryOrder extends StatefulWidget {
-  const HistoryOrder({Key? key, this.args}) : super(key: key);
-  final Map<String, dynamic>? args;
+  const HistoryOrder({Key? key, this.id}) : super(key: key);
+  final String? id;
   static const routeName = "/historyOrderDetail";
 
   @override
@@ -27,46 +27,81 @@ class HistoryOrder extends StatefulWidget {
 
 class _HistoryOrderState extends State<HistoryOrder> {
   bool isLoading = true;
-  var value = TextEditingController(text: "2");
   late OrderModel order;
+  List<OrderDetailModel> listData = [];
+  List<ProductForm1> listProduct = [];
 
   Future<void> _getOrder() async {
-    Provider.of<HistoryOrderDetailListProvider>(context, listen: false)
+    Provider.of<OrderDetailListProvider>(context, listen: false)
         .changeLoadState(true);
+    //print(widget.args!['id']);
     try {
-      var result = await OrderApi.getOldOrder("62af6e1068e9dd0d9ab5b448");
+      //print(widget.args.toString());
+      var result = await OrderApi.getOrder(widget.id!);
+
       if (result is InfoResponse) {
         setState(() {
-          order = OrderModel.fromJson(result.data["order"], result.data["order"]);
+          order =
+              OrderModel.fromJson(result.data["order"], result.data["order"]);
           var temp = result.data["order_detail"]
               .map<OrderDetailModel>((e) => OrderDetailModel.fromJson(e));
 
           if (temp != null) {
-            Provider.of<HistoryOrderDetailListProvider>(context, listen: false)
-                .updateList([...temp]);
+            for (var i in result.data["order_detail"]) {
+              listData.add(OrderDetailModel.fromJson(i));
+            }
           }
-          Provider.of<HistoryOrderDetailListProvider>(context, listen: false)
+          Provider.of<OrderDetailListProvider>(context, listen: false)
               .changeLoadState(false);
         });
       }
     } on DioError catch (e) {
       Alert.errorAlert(e, context).then((_) =>
-          Provider.of<HistoryOrderDetailListProvider>(context, listen: false)
+          Provider.of<OrderDetailListProvider>(context, listen: false)
               .changeLoadState(false));
     }
   }
 
   Future<void> _getProduct() async {
     try {
-      Provider.of<HistoryOrderDetailListProvider>(context, listen: false)
-          .orderDetailList
-          .forEach((e) async {
+      listData.forEach((e) async {
         var result = await ProductApi.getProductInfo(e.product_id);
         if (result is InfoResponse) {
-          Provider.of<UpdateProductOfOrder>(context, listen: false)
-              .updateAmountOfProduct(ProductForm.fromJson(result.data));
+          listProduct.add(ProductForm1.fromJson(result.data));
         }
       });
+    } on DioError catch (e) {
+      Alert.errorAlert(e, context);
+    }
+  }
+
+  // Future<void> _decreaseAmount(OrderDetailModel data) async {
+  //   try {
+  //     Provider.of<OrderDetailListProvider>(context, listen: false)
+  //         .orderDetailList
+  //         .forEach((e) {
+  //       if (e.product_id == data.product_id && e.order_id == data.order_id) {
+  //         e.quantity = e.quantity - 1;
+  //       }
+  //     });
+  //     var result = await OrderApi.updateOrder(
+  //         Provider.of<OrderDetailListProvider>(context, listen: false)
+  //             .orderDetailList);
+  //     if (result is InfoResponse) {
+  //       _getOrder();
+  //     }
+  //   } on DioError catch (e) {
+  //     Alert.errorAlert(e, context);
+  //   }
+  // }
+
+  Future<void> _doneOrder() async {
+    try {
+      var result = await OrderApi.doneOrder(order.order_id);
+
+      if (result is InfoResponse) {
+        Navigator.maybePop(context);
+      }
     } on DioError catch (e) {
       Alert.errorAlert(e, context);
     }
@@ -113,11 +148,11 @@ class _HistoryOrderState extends State<HistoryOrder> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Order 11',
+                            'Order ${order.seq}',
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           Text(
-                            '${Provider.of<HistoryOrderDetailListProvider>(context, listen: false).orderDetailList.length} order',
+                            '${listData.length} order',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
@@ -136,35 +171,15 @@ class _HistoryOrderState extends State<HistoryOrder> {
                         maxHeight: MediaQuery.of(context).size.height * 0.5),
                     child: ListView.builder(
                       padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-                      itemCount: Provider.of<UpdateProductOfOrder>(context,
-                              listen: false)
-                          .product
-                          .length,
+                      itemCount: listProduct.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Provider.of<UpdateProductOfOrder>(context,
-                                      listen: false)
-                                  .product
-                                  .isEmpty
+                          child: listProduct.isEmpty
                               ? const Center(child: Text("No product"))
                               : OrderDetailCard(
-                                  orderDetail: Provider.of<
-                                              HistoryOrderDetailListProvider>(
-                                          context,
-                                          listen: false)
-                                      .orderDetailList[index],
-                                  productDetail:
-                                      Provider.of<UpdateProductOfOrder>(context,
-                                                  listen: false)
-                                              .product[
-                                          (Provider.of<UpdateProductOfOrder>(
-                                                          context,
-                                                          listen: false)
-                                                      .product
-                                                      .length -
-                                                  1) -
-                                              index],
+                                  orderDetail: listData[index],
+                                  productDetail: listProduct[index],
                                   //onDecrease: _decreaseAmount,
                                 ),
                         );

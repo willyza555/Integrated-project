@@ -75,7 +75,7 @@ class OrderDetailModel {
 
   factory OrderDetailModel.fromJson(Map<String, dynamic> data) {
     return OrderDetailModel.set(
-      order_id: data['order_id'],
+      order_id: data['_id'],
       product_id: data['product_id'],
       quantity: data['quantity'],
     );

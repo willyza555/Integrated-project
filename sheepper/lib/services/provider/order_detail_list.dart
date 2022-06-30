@@ -12,6 +12,11 @@ class OrderDetailListProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   void changeLoadState(bool value) {
     isLoading = value;
+    //notifyListeners();
+  }
+
+  void deleteList() {
+    orderDetailList = [];
     notifyListeners();
   }
 }

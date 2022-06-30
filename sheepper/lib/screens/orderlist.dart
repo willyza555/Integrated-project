@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sheepper/models/order.dart';
 import 'package:sheepper/models/response/info_response.dart';
+import 'package:sheepper/screens/order_detail.dart';
 import 'package:sheepper/services/api/order.dart';
+import 'package:sheepper/services/provider/order_detail_list.dart';
 import 'package:sheepper/services/provider/order_list.dart';
+import 'package:sheepper/services/provider/product_of_order_list.dart';
 import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/order_card.dart';
 
@@ -24,14 +27,14 @@ class _OrderListState extends State<OrderList> {
         .changeLoadState(true);
     try {
       var result = await OrderApi.getBigOrder();
-      
+
       if (result is InfoResponse) {
-        
         setState(() {
           realResult = result.data;
         });
         Provider.of<OrderListProvider>(context, listen: false)
             .changeLoadState(false);
+
         // print("2");
         // print(Provider.of<OrderListProvider>(context, listen: true).orders);
       }
@@ -46,8 +49,9 @@ class _OrderListState extends State<OrderList> {
   void initState() {
     super.initState();
     _getorder();
+    Provider.of<OrderDetailListProvider>(context, listen: false).deleteList();
+    Provider.of<UpdateProductOfOrder>(context, listen: false).deleteList();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +59,12 @@ class _OrderListState extends State<OrderList> {
       resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.all(16),
-         decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/orderlist.jpg"),
-              fit: BoxFit.cover,
-            ),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/orderlist.jpg"),
+            fit: BoxFit.cover,
           ),
+        ),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,12 +77,13 @@ class _OrderListState extends State<OrderList> {
               Expanded(
                   child: realResult["orders"] != null
                       ? ListView.builder(
-                         physics: const AlwaysScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           itemCount: realResult["orders"].length,
                           itemBuilder: (BuildContext context, int index) {
                             return OrderCard(
-                              order: OrderModel.fromJson(realResult["orders"][index],
+                              order: OrderModel.fromJson(
+                                  realResult["orders"][index],
                                   realResult["customer"][index]),
                               showInfoHandler: _showInfo,
                             );
@@ -91,13 +96,13 @@ class _OrderListState extends State<OrderList> {
   }
 
   void _showInfo(String id) {
-    // Navigator.of(context).pushNamed(HouseDetailed.routeName, arguments: {
+    // Navigator.of(context).pushNamed(OrderDetail.routeName, arguments: {
     //   'id': id,
     // });
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SecondRoute()),
+      MaterialPageRoute(builder: (context) => OrderDetail(id: id)),
     );
   }
 }

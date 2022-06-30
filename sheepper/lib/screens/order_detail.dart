@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:sheepper/models/order.dart';
 import 'package:sheepper/models/product.dart';
 import 'package:sheepper/models/response/info_response.dart';
+import 'package:sheepper/screens/orderlist.dart';
 import 'package:sheepper/services/api/order.dart';
 import 'package:sheepper/services/api/product.dart';
 import 'package:sheepper/services/provider/order_detail_list.dart';
@@ -19,8 +20,8 @@ import 'package:sheepper/widgets/common/button.dart';
 import 'package:sheepper/widgets/common/oreder_detail_card.dart';
 
 class OrderDetail extends StatefulWidget {
-  const OrderDetail({Key? key, this.args}) : super(key: key);
-  final Map<String, dynamic>? args;
+  const OrderDetail({Key? key, this.id}) : super(key: key);
+  final String? id;
   static const routeName = "/order";
 
   @override
@@ -30,23 +31,28 @@ class OrderDetail extends StatefulWidget {
 class _OrderDetailState extends State<OrderDetail> {
   bool isLoading = true;
   late OrderModel order;
+  List<OrderDetailModel> listData = [];
+  List<ProductForm1> listProduct = [];
 
   Future<void> _getOrder() async {
     Provider.of<OrderDetailListProvider>(context, listen: false)
         .changeLoadState(true);
+    //print(widget.args!['id']);
     try {
-      var result = await OrderApi.getOrder("62af6e1068e9dd0d9ab5b448");
+      //print(widget.args.toString());
+      var result = await OrderApi.getOrder(widget.id!);
+
       if (result is InfoResponse) {
         setState(() {
-          order = OrderModel.fromJson(
-            result.data["order"], result.data["order"]
-          );
+          order =
+              OrderModel.fromJson(result.data["order"], result.data["order"]);
           var temp = result.data["order_detail"]
               .map<OrderDetailModel>((e) => OrderDetailModel.fromJson(e));
 
           if (temp != null) {
-            Provider.of<OrderDetailListProvider>(context, listen: false)
-                .updateList([...temp]);
+            for (var i in result.data["order_detail"]) {
+              listData.add(OrderDetailModel.fromJson(i));
+            }
           }
           Provider.of<OrderDetailListProvider>(context, listen: false)
               .changeLoadState(false);
@@ -61,13 +67,10 @@ class _OrderDetailState extends State<OrderDetail> {
 
   Future<void> _getProduct() async {
     try {
-      Provider.of<OrderDetailListProvider>(context, listen: false)
-          .orderDetailList
-          .forEach((e) async {
+      listData.forEach((e) async {
         var result = await ProductApi.getProductInfo(e.product_id);
         if (result is InfoResponse) {
-          Provider.of<UpdateProductOfOrder>(context, listen: false)
-              .updateAmountOfProduct(ProductForm.fromJson(result.data));
+          listProduct.add(ProductForm1.fromJson(result.data));
         }
       });
     } on DioError catch (e) {
@@ -100,7 +103,7 @@ class _OrderDetailState extends State<OrderDetail> {
       var result = await OrderApi.doneOrder(order.order_id);
 
       if (result is InfoResponse) {
-        _getOrder();
+        Navigator.maybePop(context);
       }
     } on DioError catch (e) {
       Alert.errorAlert(e, context);
@@ -152,7 +155,7 @@ class _OrderDetailState extends State<OrderDetail> {
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           Text(
-                            '${Provider.of<OrderDetailListProvider>(context, listen: false).orderDetailList.length} order',
+                            '${listData.length} order',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
@@ -171,35 +174,15 @@ class _OrderDetailState extends State<OrderDetail> {
                         maxHeight: MediaQuery.of(context).size.height * 0.5),
                     child: ListView.builder(
                       padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-                      itemCount: Provider.of<UpdateProductOfOrder>(context,
-                              listen: false)
-                          .product
-                          .length,
+                      itemCount: listData.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Provider.of<UpdateProductOfOrder>(context,
-                                      listen: false)
-                                  .product
-                                  .isEmpty
+                          child: listData.isEmpty
                               ? const Center(child: Text("No product"))
                               : OrderDetailCard(
-                                  orderDetail:
-                                      Provider.of<OrderDetailListProvider>(
-                                              context,
-                                              listen: false)
-                                          .orderDetailList[index],
-                                  productDetail:
-                                      Provider.of<UpdateProductOfOrder>(context,
-                                                  listen: false)
-                                              .product[
-                                          (Provider.of<UpdateProductOfOrder>(
-                                                          context,
-                                                          listen: false)
-                                                      .product
-                                                      .length -
-                                                  1) -
-                                              index],
+                                  orderDetail: listData[index],
+                                  productDetail: listProduct[index],
                                   //onDecrease: _decreaseAmount,
                                 ),
                         );

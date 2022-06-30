@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sheepper/models/product.dart';
 import 'package:sheepper/models/response/info_response.dart';
 import 'package:sheepper/widgets/common/alert.dart';
@@ -14,15 +11,15 @@ import 'package:sheepper/widgets/common/my_back_button.dart';
 import 'package:sheepper/services/api/product.dart';
 import 'package:image_picker/image_picker.dart';
 
-class productlist extends StatefulWidget {
-  const productlist({Key? key}) : super(key: key);
+class Productlist extends StatefulWidget {
+  const Productlist({Key? key}) : super(key: key);
   static const routeName = "/sign-in";
 
   @override
-  State<productlist> createState() => _productlistState();
+  State<Productlist> createState() => _ProductlistState();
 }
 
-class _productlistState extends State<productlist> {
+class _ProductlistState extends State<Productlist> {
   List<ProductForm1> listproduct = [];
 
   Future<void> _getproducts() async {
@@ -433,7 +430,7 @@ class _AddDialogState extends State<AddDialog> with TickerProviderStateMixin {
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 Container(
-                  padding: EdgeInsets.only(right:30, left: 30),
+                  padding: EdgeInsets.only(right: 30, left: 30),
                   child: Column(
                     children: [
                       TextFormField(

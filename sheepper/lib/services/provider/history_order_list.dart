@@ -12,6 +12,6 @@ class HistoryOrderListProvider with ChangeNotifier {
 
   void changeLoadState(bool value) {
     isLoading = value;
-    notifyListeners();
+    //notifyListeners();
   }
 }

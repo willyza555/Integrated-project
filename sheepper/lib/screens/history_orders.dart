@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:sheepper/models/order.dart';
 import 'package:sheepper/models/response/info_response.dart';
 import 'package:sheepper/services/api/order.dart';
+import 'package:sheepper/services/provider/history_order_detail_list.dart';
 import 'package:sheepper/services/provider/order_list.dart';
+import 'package:sheepper/services/provider/product_of_order_list.dart';
 import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/order_card.dart';
 
@@ -43,8 +45,12 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
 
   @override
   void initState() {
-    super.initState();
     _gethistoryorder();
+
+    Provider.of<HistoryOrderDetailListProvider>(context, listen: false)
+        .deleteList();
+    Provider.of<UpdateProductOfOrder>(context, listen: false).deleteList();
+    super.initState();
   }
 
   @override
@@ -77,7 +83,8 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
                         itemCount: realResult["orders"].length,
                         itemBuilder: (BuildContext context, int index) {
                           return OrderCard(
-                            order: OrderModel.fromJson(realResult["orders"][index],
+                            order: OrderModel.fromJson(
+                                realResult["orders"][index],
                                 realResult["customer"][index]),
                             showInfoHandler: _showInfo,
                           );
