@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:sheepper/models/response/info_response.dart';
 import 'package:sheepper/screens/history_order.dart';
-import 'package:sheepper/screens/order.dart';
+import 'package:sheepper/screens/order_detail.dart';
 import 'package:sheepper/services/api/user.dart';
 import 'package:sheepper/services/dio.dart';
 import 'package:sheepper/services/share_preference.dart';
@@ -201,7 +201,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.pushNamed(context, Order.routeName);
+                            Navigator.pushNamed(context, OrderDetail.routeName);
                           },
                       ),
                     ),

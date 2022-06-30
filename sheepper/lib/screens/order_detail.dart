@@ -18,16 +18,16 @@ import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/button.dart';
 import 'package:sheepper/widgets/common/oreder_detail_card.dart';
 
-class Order extends StatefulWidget {
-  const Order({Key? key, this.args}) : super(key: key);
+class OrderDetail extends StatefulWidget {
+  const OrderDetail({Key? key, this.args}) : super(key: key);
   final Map<String, dynamic>? args;
   static const routeName = "/order";
 
   @override
-  State<Order> createState() => _OrderState();
+  State<OrderDetail> createState() => _OrderDetailState();
 }
 
-class _OrderState extends State<Order> {
+class _OrderDetailState extends State<OrderDetail> {
   bool isLoading = true;
   late OrderModel order;
 
@@ -146,7 +146,7 @@ class _OrderState extends State<Order> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Order 11',
+                            'Order ${order.seq}',
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           Text(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sheepper/screens/history_order.dart';
-import 'package:sheepper/screens/order.dart';
+import 'package:sheepper/screens/order_detail.dart';
 import 'package:sheepper/screens/product.dart';
 import 'package:sheepper/screens/sign_in.dart';
 import 'package:sheepper/services/dio.dart';
@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
         Product.routeName: (context) => const Product(),
         MyHomePage.routeName: (context) => const MyHomePage(),
         SignIn.routeName: (context) => const SignIn(),
-        Order.routeName: (context) => const Order(),
+        OrderDetail.routeName: (context) => const OrderDetail(),
         HistoryOrder.routeName: (context) => const HistoryOrder(),
       },
     );
@@ -144,9 +144,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     List<Widget> screen = <Widget>[
       Product(),
-      Order(),
-      Order(),
-      Order(),
+      OrderDetail(),
+      OrderDetail(),
+      OrderDetail(),
     ];
     return Scaffold(
       // appBar: AppBar(
