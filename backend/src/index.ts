@@ -24,6 +24,7 @@ import userRoute from "@/routes/User";
 import productRoute from "@/routes/product";
 import restaurantRoute from "@/routes/restaurant";
 import orderRoute from "./routes/order";
+import storageRoute from "./routes/storage";
 
 /** Instantiate Application */
 const app = express();
@@ -81,6 +82,8 @@ app.use("/user", userRoute);
 app.use("/product", productRoute);
 app.use("/restaurant", restaurantRoute);
 app.use("/order", orderRoute);
+app.use("/storage", storageRoute);
+
 
 // for testing only
 app.get("/", async (req, res) => {

@@ -5,4 +5,5 @@ export default interface Product {
 	name: string;
 	price: number;
 	isSoldOut: boolean;
+	picture_url: string;
 }

@@ -7,4 +7,5 @@ export default interface User {
 	email: string;
 	tel: string;
 	isRestaurant: boolean;
+	picture_url: string;
 }

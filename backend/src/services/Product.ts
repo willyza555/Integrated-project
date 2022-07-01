@@ -28,6 +28,7 @@ export const AddProduct = async (req: Request, body: ProductPost) => {
 				res_id: restaurant._id,
 				name: body.name,
 				price: body.price,
+				picture_url: body.pictureUrl,
 			});
 		} catch (e) {
 			return genericError(e.message, 400);
@@ -198,7 +199,9 @@ export const ProductSoldOut = async (
 
 		const soldout = await Product.findOne({
 			_id: product_id,
-		}).select('isSoldOut').exec();
+		})
+			.select("isSoldOut")
+			.exec();
 		console.log(soldout);
 		if (restaurant == null) {
 			return genericError(
@@ -209,7 +212,7 @@ export const ProductSoldOut = async (
 		try {
 			await Product.updateOne(
 				{ _id: product_id },
-				{ $set: { isSoldOut: !soldout.isSoldOut} }
+				{ $set: { isSoldOut: !soldout.isSoldOut } }
 			).exec();
 		} catch (error) {
 			return genericError(error.message, 400);

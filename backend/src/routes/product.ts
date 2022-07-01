@@ -15,6 +15,7 @@ const productRoute = express.Router();
 
 productRoute.post("/add", async (req, res) => {
 	const data: ProductPost = req.body;
+	console.log(data.pictureUrl);
 	return responseHandler(res, await AddProduct(req, data));
 });
 

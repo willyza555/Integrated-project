@@ -9,4 +9,5 @@ export default interface Restaurant {
 		coordinates: number[];
 	};
 	isOpen: boolean;
+	picture_url: string;
 }

@@ -105,6 +105,7 @@ export const productSchema = new Schema<Product>({
 		required: true,
 		default: false,
 	},
+	picture_url: String,
 });
 
 export const orderSchema = new Schema<Order>({

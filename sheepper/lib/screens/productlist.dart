@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sheepper/models/product.dart';
 import 'package:sheepper/models/response/info_response.dart';
+import 'package:sheepper/services/constants.dart';
 import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/button.dart';
 import 'package:sheepper/widgets/common/my_back_button.dart';
@@ -45,11 +46,11 @@ class _ProductlistState extends State<Productlist> {
     _getproducts();
   }
 
-  Future<void> _add(String name, int price) async {
+  Future<void> _add(String name, int price, File image) async {
     // listproduct.add(productOfFood(name: name, price: price));
     try {
-      var result = await ProductApi.addProductInfo(
-          productOfFood(name: name, price: price));
+      var result = await ProductApi.addProductInfo(productOfFood.set(
+          name: name, price: price, pictureUrl: "", picture: image));
       _getproducts();
     } on DioError catch (err) {
       Alert.errorAlert(err, context);
@@ -116,6 +117,7 @@ class _ProductlistState extends State<Productlist> {
                   list: listproduct[index].id,
                   name: listproduct[index].name,
                   price: listproduct[index].price,
+                  pictureUrl: listproduct[index].pictureUrl,
                   update: _update,
                   delete: _delete,
                 );
@@ -206,7 +208,8 @@ class food extends StatefulWidget {
       required this.update,
       required this.list,
       required this.delete,
-      required this.isSoldOut})
+      required this.isSoldOut,
+      required this.pictureUrl})
       : super(key: key);
   final String name;
   final int price;
@@ -214,6 +217,7 @@ class food extends StatefulWidget {
   final String list;
   final Function delete;
   final bool isSoldOut;
+  final String pictureUrl;
   // final void delete;
   @override
   State<food> createState() => _foodState();
@@ -222,6 +226,7 @@ class food extends StatefulWidget {
 class _foodState extends State<food> {
   @override
   Widget build(BuildContext context) {
+    print(widget.pictureUrl);
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -252,18 +257,27 @@ class _foodState extends State<food> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: ShaderMask(
-                          shaderCallback: (rect) {
-                            return LinearGradient(
-                                    colors: [Colors.white, Colors.transparent],
-                                    end: Alignment.bottomCenter,
-                                    begin: Alignment.topCenter)
-                                .createShader(Rect.fromLTRB(
-                                    0, 0, rect.width, rect.height));
-                          },
-                          blendMode: BlendMode.dstIn,
-                          child: Image.asset(
-                            'assets/res2.png',
-                          )),
+                        shaderCallback: (rect) {
+                          return LinearGradient(
+                                  colors: [Colors.white, Colors.transparent],
+                                  end: Alignment.bottomCenter,
+                                  begin: Alignment.topCenter)
+                              .createShader(
+                                  Rect.fromLTRB(0, 0, rect.width, rect.height));
+                        },
+                        blendMode: BlendMode.dstIn,
+                        child: widget.pictureUrl != null
+                            ? Image.network(
+                                Constants.baseUrl + widget.pictureUrl,
+                                fit: BoxFit.cover,
+                                height: 150,
+                              )
+                            : Image.asset(
+                                'assets/res2.png',
+                                fit: BoxFit.cover,
+                                height: 150,
+                              ),
+                      ),
                     ),
                   ),
                 ),
@@ -499,7 +513,7 @@ class _AddDialogState extends State<AddDialog> with TickerProviderStateMixin {
                   child: ElevatedButton(
                     onPressed: () {
                       widget.add(name.text.toString(),
-                          int.parse(price.text.toString()));
+                          int.parse(price.text.toString()), image);
                       clearText();
                       Navigator.pop(context, 'Close');
                     },
