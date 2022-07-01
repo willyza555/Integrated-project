@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:custom_switch/custom_switch.dart';
 
 class SwitchScreen extends StatefulWidget {
+  const SwitchScreen({super.key, this.isOpen, required this.handler});
+  late bool? isOpen;
+  final Function handler;
   @override
-  SwitchClass createState() => new SwitchClass();
+  State<SwitchScreen> createState() => _SwitchScreenState();
 }
 
-class SwitchClass extends State {
-  bool isSwitched = false;
+class _SwitchScreenState extends State<SwitchScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -15,19 +23,20 @@ class SwitchClass extends State {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children:  <Widget>[
+          children: <Widget>[
             CustomSwitch(
-              value: isSwitched,
+              key: ,
+              value: true,
               activeColor: Color.fromARGB(255, 0, 210, 102),
               onChanged: (value) {
+                print(value);
                 setState(() {
-                  isSwitched = value;
+                  widget.isOpen = value;
+                  widget.handler();
                 });
               },
             ),
-            
-          ]
-          ),
+          ]),
     );
   }
 }

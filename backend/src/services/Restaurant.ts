@@ -78,7 +78,7 @@ export const updateRestaurant = async (req: Request) => {
 		}
 		const user_id = req.user.user_id;
 
-		const databaseres = await Restaurant.findById({
+		const databaseres = await Restaurant.findOne({
 			owner_id: user_id,
 		});
 

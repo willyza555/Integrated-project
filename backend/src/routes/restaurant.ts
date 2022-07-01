@@ -4,6 +4,7 @@ import {
 	createRestautant,
 	deleteRestaurant,
 	readRestautant,
+	updateRestaurant,
 } from "@/services/Restaurant";
 import express from "express";
 
@@ -21,5 +22,9 @@ restaurantRoute.get("/", async (req, res) => {
 restaurantRoute.delete("/", async (req, res) => {
 	return responseHandler(res, await deleteRestaurant(req));
 });
+
+restaurantRoute.patch("/close", async (req, res) => {
+	return responseHandler(res, await updateRestaurant(req));
+})
 
 export default restaurantRoute;
