@@ -37,7 +37,7 @@ class _HistoryOrderState extends State<HistoryOrder> {
     //print(widget.args!['id']);
     try {
       //print(widget.args.toString());
-      var result = await OrderApi.getOrder(widget.id!);
+      var result = await OrderApi.getOldOrder(widget.id!);
 
       if (result is InfoResponse) {
         setState(() {
@@ -205,9 +205,6 @@ class _HistoryOrderState extends State<HistoryOrder> {
                         style: Theme.of(context).textTheme.headline2,
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: 40,
                   ),
                 ],
               ),

@@ -32,6 +32,7 @@ class _OrderListState extends State<OrderList> {
         setState(() {
           realResult = result.data;
         });
+
         Provider.of<OrderListProvider>(context, listen: false)
             .changeLoadState(false);
 
@@ -84,7 +85,9 @@ class _OrderListState extends State<OrderList> {
                             return OrderCard(
                               order: OrderModel.fromJson(
                                   realResult["orders"][index],
-                                  realResult["customer"][index]),
+                                  realResult["customer"][index] ??
+                                      realResult["customer"]
+                                          [realResult["customer"].length - 1]),
                               showInfoHandler: _showInfo,
                             );
                           },

@@ -4,7 +4,7 @@ import {
 	OrderDetail,
 	Product,
 	Restaurant,
-	User
+	User,
 } from "@/database/models";
 import { CreateOrderPost, OrderUpdate } from "@/interface/api/Order";
 import { Request } from "express";
@@ -74,14 +74,21 @@ export const GetOrders = async (req: Request) => {
 		const res_id = await Restaurant.findOne({ owner_id: user_id })
 			.select("_id")
 			.exec();
-		
+
 		const orders = await Order.find({ res_id, isDone: false }).exec();
-		
-		
-		const customer = await User.find({ _id: { $in: orders.map((o) => o.customer_id) }, isRestaurant : false }).select(["firstname","lastname","tel"]).exec();
-		
-		return await infoResponse({orders,customer}, "Get order success", 200);
-		
+
+		const customer = await User.find({
+			_id: { $in: orders.map((o) => o.customer_id) },
+			isRestaurant: false,
+		})
+			.select(["firstname", "lastname", "tel"])
+			.exec();
+
+		return await infoResponse(
+			{ orders, customer },
+			"Get order success",
+			200
+		);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
@@ -106,15 +113,18 @@ export const GetOldOrder = async (req: Request) => {
 			res_id,
 			isDone: true,
 		}).exec();
+		console.log("Order");
+
+		console.log(order);
 		const order_detail = await OrderDetail.find({
 			order_id,
 		}).exec();
 		const result = { order, order_detail };
 		return infoResponse(result, "Get order success", 200);
-			} catch (error) {
+	} catch (error) {
 		return genericError(error.message, 500);
 	}
- }
+};
 export const GetHistoryOrders = async (req: Request) => {
 	try {
 		if (!isLogin(req)) {
@@ -127,19 +137,25 @@ export const GetHistoryOrders = async (req: Request) => {
 		const res_id = await Restaurant.findOne({ owner_id: user_id })
 			.select("_id")
 			.exec();
-		
+
 		const orders = await Order.find({ res_id, isDone: true }).exec();
-		
-		
-		const customer = await User.find({ _id: { $in: orders.map((o) => o.customer_id) }, isRestaurant : false }).select(["firstname","lastname","tel"]).exec();
-		
-		return await infoResponse({orders,customer}, "Get order success", 200);
-		
+
+		const customer = await User.find({
+			_id: { $in: orders.map((o) => o.customer_id) },
+			isRestaurant: false,
+		})
+			.select(["firstname", "lastname", "tel"])
+			.exec();
+
+		return await infoResponse(
+			{ orders, customer },
+			"Get order success",
+			200
+		);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}
 };
-
 
 export const GetOrder = async (req: Request) => {
 	try {

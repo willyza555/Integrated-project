@@ -28,8 +28,6 @@ class _ProfileState extends State<Profile> {
         });
 
         isOpen = result.data['isOpen'];
-        print(isOpen);
-        print(isOpen.runtimeType);
       }
     } on DioError catch (e) {
       Alert.errorAlert(e, context);

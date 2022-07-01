@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sheepper/models/order.dart';
 import 'package:sheepper/models/response/info_response.dart';
+import 'package:sheepper/screens/history_order.dart';
 import 'package:sheepper/services/api/order.dart';
 import 'package:sheepper/services/provider/history_order_detail_list.dart';
 import 'package:sheepper/services/provider/order_list.dart';
@@ -31,6 +32,7 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
         setState(() {
           realResult = result.data;
         });
+        print(realResult);
         Provider.of<OrderListProvider>(context, listen: false)
             .changeLoadState(false);
         // print("2");
@@ -65,7 +67,7 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
           ),
         ),
         padding: const EdgeInsets.all(16),
-        color: Colors.orange[400],
+        // color: Colors.orange[400],
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +87,9 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
                           return OrderCard(
                             order: OrderModel.fromJson(
                                 realResult["orders"][index],
-                                realResult["customer"][index]),
+                                realResult["customer"][index] ??
+                                    realResult["customer"]
+                                        [realResult["customer"].length - 1]),
                             showInfoHandler: _showInfo,
                           );
                         },
@@ -104,7 +108,7 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SecondRoute()),
+      MaterialPageRoute(builder: (context) => HistoryOrder(id: id)),
     );
   }
 }
