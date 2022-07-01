@@ -137,7 +137,12 @@ class _HistoryOrderState extends State<HistoryOrder> {
             )
           : Container(
               // height: MediaQuery.of(context).size.height,
-              color: Colors.red[100],
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/orderlist.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
               padding: const EdgeInsets.fromLTRB(30, 60, 30, 0),
               child: Column(
                 children: [

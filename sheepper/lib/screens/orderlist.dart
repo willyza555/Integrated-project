@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +24,8 @@ class OrderList extends StatefulWidget {
 class _OrderListState extends State<OrderList> {
   bool isLoading = true;
   late dynamic realResult;
+  Timer? timer;
+
   Future<void> _getorder() async {
     Provider.of<OrderListProvider>(context, listen: false)
         .changeLoadState(true);
@@ -49,9 +53,15 @@ class _OrderListState extends State<OrderList> {
   @override
   void initState() {
     super.initState();
-    _getorder();
-    Provider.of<OrderDetailListProvider>(context, listen: false).deleteList();
-    Provider.of<UpdateProductOfOrder>(context, listen: false).deleteList();
+    timer =
+        Timer.periodic(Duration(milliseconds: 500), (Timer t) => _getorder());
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override

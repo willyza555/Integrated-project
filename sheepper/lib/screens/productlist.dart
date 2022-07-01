@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sheepper/models/product.dart';
 import 'package:sheepper/models/response/info_response.dart';
+import 'package:sheepper/services/api/user.dart';
 import 'package:sheepper/services/constants.dart';
 import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/button.dart';
@@ -22,6 +23,18 @@ class Productlist extends StatefulWidget {
 
 class _ProductlistState extends State<Productlist> {
   List<ProductForm1> listproduct = [];
+  String name = "";
+
+  Future<void> _getProfile() async {
+    try {
+      var result = await UserApi.getRestaurantInfo();
+      if (result is InfoResponse) {
+        name = result.data['name'];
+      }
+    } on DioError catch (e) {
+      Alert.errorAlert(e, context);
+    }
+  }
 
   Future<void> _getproducts() async {
     try {
@@ -44,6 +57,7 @@ class _ProductlistState extends State<Productlist> {
   void initState() {
     super.initState();
     _getproducts();
+    _getProfile();
   }
 
   Future<void> _add(String name, int price, File image) async {
@@ -99,7 +113,7 @@ class _ProductlistState extends State<Productlist> {
                   alignment: Alignment.centerLeft,
                   child: MyBackButton(),
                 ),
-                picres(),
+                picres(name: name),
               ],
             ),
           ]),
@@ -131,7 +145,8 @@ class _ProductlistState extends State<Productlist> {
 }
 
 class picres extends StatelessWidget {
-  const picres({Key? key}) : super(key: key);
+  const picres({Key? key, required this.name}) : super(key: key);
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -152,26 +167,32 @@ class picres extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: ShaderMask(
-                  shaderCallback: (rect) {
-                    return LinearGradient(
-                            colors: [Colors.white, Colors.transparent],
-                            end: Alignment.bottomCenter,
-                            begin: Alignment.topCenter)
-                        .createShader(
-                            Rect.fromLTRB(0, 0, rect.width, rect.height));
-                  },
-                  blendMode: BlendMode.dstIn,
-                  child: Image.asset(
-                    'assets/res2.png',
-                    fit: BoxFit.fill,
-                  )),
+                shaderCallback: (rect) {
+                  return LinearGradient(
+                          colors: [Colors.white, Colors.transparent],
+                          end: Alignment.bottomCenter,
+                          begin: Alignment.topCenter)
+                      .createShader(
+                          Rect.fromLTRB(0, 0, rect.width, rect.height));
+                },
+                blendMode: BlendMode.dstIn,
+                child: name.contains("KinKun")
+                    ? Image.asset(
+                        'assets/res1.jpg',
+                        fit: BoxFit.fill,
+                      )
+                    : Image.asset(
+                        'assets/res2.png',
+                        fit: BoxFit.fill,
+                      ),
+              ),
             ),
           ),
         ),
         Container(
             alignment: Alignment.bottomCenter,
             padding: EdgeInsets.only(top: 180),
-            child: Text("RES2", style: Theme.of(context).textTheme.headline1))
+            child: Text(name, style: Theme.of(context).textTheme.headline1))
       ],
     );
   }

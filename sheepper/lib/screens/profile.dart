@@ -22,7 +22,6 @@ class _ProfileState extends State<Profile> {
     try {
       var result = await UserApi.getRestaurantInfo();
       if (result is InfoResponse) {
-        print(result.data);
         setState(() {
           name = result.data['name'];
         });
