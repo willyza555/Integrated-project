@@ -47,8 +47,11 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
 
   @override
   void initState() {
-    _gethistoryorder();
-
+    _gethistoryorder().then((_) => Future.delayed(const Duration(milliseconds: 500),(){
+      setState(() {
+        isLoading = false;
+      });
+    }));
     Provider.of<HistoryOrderDetailListProvider>(context, listen: false)
         .deleteList();
     Provider.of<UpdateProductOfOrder>(context, listen: false).deleteList();
@@ -59,7 +62,7 @@ class _HistoryOrderListState extends State<HistoryOrderList> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
+      body: isLoading ? Center(child: CircularProgressIndicator()) : Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/orderlist.jpg"),

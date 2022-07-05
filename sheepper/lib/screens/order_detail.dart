@@ -114,7 +114,7 @@ class _OrderDetailState extends State<OrderDetail> {
   void initState() {
     // TODO: implement initState
     _getOrder().then((_) {
-      _getProduct().then((_) => Future.delayed(const Duration(seconds: 1), () {
+      _getProduct().then((_) => Future.delayed(const Duration(milliseconds: 500), () {
             setState(() {
               isLoading = false;
             });

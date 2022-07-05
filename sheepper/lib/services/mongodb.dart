@@ -46,9 +46,7 @@ class MongoDatabase {
           food.add(temp);
         }
       }
-      print(orderDe);
-      print(food);
-      print(food);
+
       if (fullDocument['res_id'] == rest['_id']) {
         return showDialog(
             context: context,
@@ -84,8 +82,7 @@ class MongoDatabase {
                                   //: Text('null'),
                                   //  orderDe[index] != null
                                   Text(
-                                    orderDe[index]['quantity'].toString() ??
-                                        '0',
+                                    orderDe[index]['quantity'].toString(),
                                     style:
                                         Theme.of(context).textTheme.headline2,
                                   )
@@ -106,7 +103,7 @@ class MongoDatabase {
                       children: [
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFFFF4141)),
+                                primary: Color(0xFFFF4141)),
                             onPressed: () async {
                               await orderCollection
                                   .remove(where.id(fullDocument['_id']));
@@ -120,7 +117,7 @@ class MongoDatabase {
                             )),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFFFFB941)),
+                                primary: Color(0xFFFFB941)),
                             onPressed: () => Navigator.pop(context, 'OK'),
                             child: Text(
                               "Accept",

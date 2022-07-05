@@ -39,7 +39,6 @@ class _ProductlistState extends State<Productlist> {
   Future<void> _getproducts() async {
     try {
       var result = await ProductApi.getRestaurantInfo();
-      print(result.data[0]);
       if (result is InfoResponse) {
         List<ProductForm1> temp = [];
         for (var e in result.data) {
@@ -159,6 +158,7 @@ class picres extends StatelessWidget {
             color: Color(0xFFADADAD),
           ),
           child: Container(
+            
             width: 350,
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -247,7 +247,6 @@ class food extends StatefulWidget {
 class _foodState extends State<food> {
   @override
   Widget build(BuildContext context) {
-    print(widget.pictureUrl);
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -290,12 +289,12 @@ class _foodState extends State<food> {
                         child: widget.pictureUrl != null
                             ? Image.network(
                                 Constants.baseUrl + widget.pictureUrl,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                                 height: 150,
                               )
                             : Image.asset(
                                 'assets/res2.png',
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                                 height: 150,
                               ),
                       ),
@@ -321,7 +320,6 @@ class _foodState extends State<food> {
                     child: ElevatedButton(
                       onPressed: () {
                         widget.update(widget.list.toString());
-                        print(widget.list.toString());
                       },
                       style: ElevatedButton.styleFrom(
                         primary: widget.isSoldOut ? Colors.red : Colors.orange,
@@ -414,7 +412,6 @@ class _AddDialogState extends State<AddDialog> with TickerProviderStateMixin {
       final imgTemp = File(image.path);
       setState(() {
         imgpath = image.path;
-        print(imgpath);
         this.image = imgTemp;
       });
     } catch (e) {

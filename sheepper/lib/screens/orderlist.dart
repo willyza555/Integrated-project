@@ -26,6 +26,7 @@ class _OrderListState extends State<OrderList> {
   dynamic realResult = [];
   Timer? timer;
 
+
   Future<void> _getorder() async {
     Provider.of<OrderListProvider>(context, listen: false)
         .changeLoadState(true);
@@ -53,8 +54,13 @@ class _OrderListState extends State<OrderList> {
   @override
   void initState() {
     super.initState();
-    timer =
-        Timer.periodic(Duration(milliseconds: 500), (Timer t) => _getorder());
+    _getorder().then((value) => Future.delayed(const Duration(seconds: 1),(){
+      setState(() {
+        isLoading = false;
+      });
+    }).then((value) =>timer =
+        Timer.periodic(Duration(milliseconds: 500), (Timer t) => _getorder())));
+    
   }
 
   @override
@@ -68,7 +74,7 @@ class _OrderListState extends State<OrderList> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
+      body: isLoading? Center( child: CircularProgressIndicator()) : Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           image: DecorationImage(
