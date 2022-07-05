@@ -75,7 +75,8 @@ class OrderCard extends StatelessWidget {
                         Text("Rider Id : ${order.rider_id!.substring(19)}",
                             style: detailStyle),
                         Flexible(
-                          child: Text("Customer: ${order.firstname} ${order.lastname}",
+                          child: Text(
+                              "Customer: ${order.firstname} ${order.lastname}",
                               maxLines: 1,
                               softWrap: false,
                               overflow: TextOverflow.fade,

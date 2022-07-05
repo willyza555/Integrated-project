@@ -260,7 +260,7 @@ export const OrderDone = async (req: Request) => {
 		} catch (error) {
 			return genericError(error.message, 400);
 		}
-		return infoResponse(null, "Order done!", 200);
+		return infoResponse(null, "Order Done!", 200);
 	} catch (error) {
 		return genericError(error.message, 500);
 	}

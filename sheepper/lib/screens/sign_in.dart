@@ -8,6 +8,7 @@ import 'package:sheepper/main.dart';
 import 'package:sheepper/models/response/info_response.dart';
 import 'package:sheepper/services/api/user.dart';
 import 'package:sheepper/services/dio.dart';
+import 'package:sheepper/services/mongodb.dart';
 import 'package:sheepper/services/share_preference.dart';
 import 'package:sheepper/widgets/common/alert.dart';
 import 'package:sheepper/widgets/common/button.dart';
@@ -40,7 +41,8 @@ class _SignInState extends State<SignIn> {
           SharePreference.prefs.setString("token", result.data);
           DioInstance.dio.options.headers["Authorization"] =
               "Bearer ${result.data}";
-          Future.delayed(const Duration(seconds: 1), (() {
+          Future.delayed(const Duration(seconds: 1), (() async {
+            await MongoDatabase.steamData(_emailController.text, context);
             setState(() {
               isLoading = false;
             });

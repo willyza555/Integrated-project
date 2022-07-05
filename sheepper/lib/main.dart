@@ -8,6 +8,7 @@ import 'package:sheepper/screens/orderlist.dart';
 import 'package:sheepper/screens/profile.dart';
 import 'package:sheepper/screens/sign_in.dart';
 import 'package:sheepper/services/dio.dart';
+import 'package:sheepper/services/mongodb.dart';
 import 'package:sheepper/services/provider/history_order_detail_list.dart';
 import 'package:sheepper/services/provider/history_order_list.dart';
 import 'package:sheepper/services/provider/order_detail_list.dart';
@@ -23,7 +24,7 @@ import 'package:sheepper/screens/productlist.dart';
 
 import 'services/provider/order_list.dart';
 
-void main() {
+void main() async {
   runApp(
     MultiProvider(
       providers: [
@@ -39,6 +40,8 @@ void main() {
   );
   SharePreference.init();
   DioInstance.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await MongoDatabase.connect();
 }
 
 class MyApp extends StatelessWidget {

@@ -23,7 +23,7 @@ class OrderList extends StatefulWidget {
 
 class _OrderListState extends State<OrderList> {
   bool isLoading = true;
-  late dynamic realResult;
+  dynamic realResult = [];
   Timer? timer;
 
   Future<void> _getorder() async {

@@ -9,6 +9,7 @@ import 'package:sheepper/models/order.dart';
 import 'package:sheepper/models/product.dart';
 import 'package:sheepper/models/response/info_response.dart';
 import 'package:sheepper/services/api/product.dart';
+import 'package:sheepper/services/constants.dart';
 import 'package:sheepper/services/provider/order_detail_list.dart';
 import 'package:sheepper/services/provider/product_of_order_list.dart';
 import 'package:sheepper/widgets/common/alert.dart';
@@ -48,14 +49,22 @@ class OrderDetailCard extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image.asset(
-                "assets/food.jpeg",
-                height: 120,
-                width: 120,
-                fit: BoxFit.cover,
-              ),
+              child: productDetail.pictureUrl != null
+                  ? Image.network(
+                      Constants.baseUrl + productDetail.pictureUrl,
+                      height: 120,
+                      width: 120,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/res2.png',
+                      height: 120,
+                      width: 120,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
+
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

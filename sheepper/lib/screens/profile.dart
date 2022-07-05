@@ -66,9 +66,15 @@ class _ProfileState extends State<Profile> {
               children: [
                 CircleAvatar(
                   radius: 48,
-                  backgroundImage: NetworkImage(
-                      'https://media-cdn.tripadvisor.com/media/photo-s/15/1f/8c/33/img-20181019-204920-largejpg.jpg',
-                      scale: 1),
+                  backgroundImage: name.contains("KinKun")
+                      ? Image.asset(
+                          'assets/res1.jpg',
+                          fit: BoxFit.fill,
+                        ).image
+                      : Image.asset(
+                          'assets/res2.png',
+                          fit: BoxFit.fill,
+                        ).image,
                 ),
                 Container(
                     width: 500,
