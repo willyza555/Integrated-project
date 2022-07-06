@@ -158,22 +158,22 @@ class _SignInState extends State<SignIn> {
                   ],
                 ),
               ),
-              Container(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Forget password ?',
-                      style: Theme.of(context).textTheme.caption,
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushNamed(context, MyHomePage.routeName);
-                        },
-                    ),
-                  ),
-                ),
-              ),
+              // Container(
+              //   alignment: Alignment.bottomRight,
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(16),
+              //     child: RichText(
+              //       text: TextSpan(
+              //         text: 'Forget password ?',
+              //         style: Theme.of(context).textTheme.caption,
+              //         recognizer: TapGestureRecognizer()
+              //           ..onTap = () {
+              //             Navigator.pushNamed(context, MyHomePage.routeName);
+              //           },
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: 40,
               ),
@@ -192,21 +192,21 @@ class _SignInState extends State<SignIn> {
                         isLoading: isLoading,
                         clickHandler: _loginHandler),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'or Sign Up here',
-                        style: const TextStyle(
-                          color: Color(0xFF022B3A),
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.pushNamed(context, MyHomePage.routeName);
-                          },
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(16),
+                  //   child: RichText(
+                  //     text: TextSpan(
+                  //       text: 'or Sign Up here',
+                  //       style: const TextStyle(
+                  //         color: Color(0xFF022B3A),
+                  //       ),
+                  //       recognizer: TapGestureRecognizer()
+                  //         ..onTap = () {
+                  //           Navigator.pushNamed(context, MyHomePage.routeName);
+                  //         },
+                  //     ),
+                  //   ),
+                  // ),
                 ]),
               ),
             ],

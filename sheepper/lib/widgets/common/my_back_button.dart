@@ -10,7 +10,7 @@ class MyBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       child: Text(
-        'Back',
+        'Logout',
         style: GoogleFonts.poppins(
           fontSize: 14,
           fontWeight: FontWeight.w500,

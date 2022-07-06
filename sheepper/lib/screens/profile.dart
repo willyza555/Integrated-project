@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sheepper/models/response/info_response.dart';
 import 'package:sheepper/services/api/user.dart';
 import 'package:sheepper/widgets/common/alert.dart';
+import 'package:sheepper/widgets/common/my_back_button.dart';
 import 'package:sheepper/widgets/common/switch.dart';
 
 class Profile extends StatefulWidget {
@@ -98,7 +99,12 @@ class _ProfileState extends State<Profile> {
                               handler: _closeAndOpenRes,
                             )),
                       ]),
-                    ))
+                    )),
+                Center(
+                  child: Container(
+                    child: MyBackButton(),
+                  ),
+                )
               ],
             ),
           )),

@@ -108,11 +108,10 @@ class _ProductlistState extends State<Productlist> {
             ),
             Column(
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: MyBackButton(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0,30,0,0),
+                  child: picres(name: name),
                 ),
-                picres(name: name),
               ],
             ),
           ]),
